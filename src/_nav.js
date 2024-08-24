@@ -16,6 +16,8 @@ import {
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 import { FileSpreadsheetFill, GraphUpArrow, PersonCircle, Sliders } from 'react-bootstrap-icons'
 
+import settingIcon from './assets/icons-sidebar/settings-controller-icon.png'
+
 const _nav = [
   {
     component: CNavItem,
