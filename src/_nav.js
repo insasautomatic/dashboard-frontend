@@ -56,56 +56,36 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Table Analysis',
+    to: '/table/analysis',
     icon: <GraphUpArrow className="nav-icon text-light" />,
     items: [
       {
         component: CNavItem,
         name: 'Roulette',
-        to: '/limits/roulette',
+        to: '/table/analysis/roulette',
       },
       {
         component: CNavItem,
         name: 'Backrat',
-        to: '/limits/roulette',
+        to: '/table/analysis/roulette',
       },
       {
         component: CNavItem,
         name: 'Andar Bahar',
-        to: '/limits/roulette',
+        to: '/table/analysis/roulette',
       },
       {
         component: CNavItem,
         name: 'Card Pocker',
-        to: '/limits/roulette',
+        to: '/table/analysis/roulette',
       },
     ],
   },
   {
-    component: CNavGroup,
+    component: CNavItem,
     name: 'Config',
+    to: '/config',
     icon: <Sliders className="nav-icon text-light" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Table Type',
-        to: '/limits/roulette',
-      },
-      {
-        component: CNavItem,
-        name: 'Language',
-        to: '/limits/roulette',
-      },
-      {
-        component: CNavItem,
-        name: 'Theme',
-        to: '/limits/roulette',
-      },
-      {
-        component: CNavItem,
-        name: 'Accounts',
-        to: '/limits/roulette',
-      },
-    ],
   },
   {
     component: CNavItem,

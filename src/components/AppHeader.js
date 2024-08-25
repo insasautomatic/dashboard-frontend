@@ -39,6 +39,7 @@ const AppHeader = () => {
   const changeTheme = (color) => {
     setColorMode(color)
     dispatch({ type: 'set', theme: color })
+    localStorage.removeItem('coreui-free-react-admin-template-theme', color)
   }
 
   useEffect(() => {

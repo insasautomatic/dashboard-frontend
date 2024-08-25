@@ -55,6 +55,7 @@ const Roulette = React.lazy(() => import('./views/limits/Roulette/Roulette'))
 const Baccarta = React.lazy(() => import('./views/limits/Baccarta/Baccarta'))
 const AndarBahar = React.lazy(() => import('./views/limits/AndarBahar/AndarBahar'))
 const ThreeCardPocker = React.lazy(() => import('./views/limits/ThreeCardPocker/ThreeCardPocker'))
+const Config = React.lazy(() => import('./views/config/Config'))
 
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 
@@ -67,6 +68,8 @@ const routes = [
   { path: '/limits/baccarta', name: 'Baccarta', element: Baccarta },
   { path: '/limits/andarbahar', name: 'AndarBahar', element: AndarBahar },
   { path: '/limits/three/card/pocker', name: 'ThreeCardPocker', element: ThreeCardPocker },
+
+  { path: '/config', name: 'Config', element: Config },
 
   { path: '/login', name: 'Login', element: Login },
 

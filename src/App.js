@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
@@ -15,22 +15,30 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 const App = () => {
-  const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
+  const { isColorModeSet, setColorMode, colorMode } = useColorModes(
+    'coreui-free-react-admin-template-theme',
+  )
   const storedTheme = useSelector((state) => state.theme)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.href.split('?')[1])
-    const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0]
+    console.log('colorMode', colorMode)
+
+    //const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0]
+    const theme = localStorage.getItem('coreui-free-react-admin-template-theme')
     if (theme) {
       setColorMode(theme)
+      dispatch({ type: 'set', theme })
+    } else if (isColorModeSet()) {
+      dispatch({ type: 'set', theme: colorMode })
+      console.log('storedTheme', storedTheme)
+    } else {
+      setColorMode(storedTheme)
+      dispatch({ type: 'set', theme: storedTheme })
+      console.log('storedTheme', storedTheme)
     }
-
-    if (isColorModeSet()) {
-      return
-    }
-
-    setColorMode(storedTheme)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [colorMode, dispatch, isColorModeSet, setColorMode, storedTheme])
 
   return (
     <BrowserRouter>
