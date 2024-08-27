@@ -12,9 +12,6 @@ const Config = () => {
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const [formData, setFormData] = useState({
     table_type: '',
-
-    s_message: '',
-    table_type: 'Roulette',
     theme: '',
     language: '',
     background: '',
@@ -32,6 +29,70 @@ const Config = () => {
     })
   }
 
+  const handleAddtheme = async () => {
+    if (formData.theme == '') {
+      showToast('Enter Theme', 'info')
+      return
+    }
+
+    try {
+      const response = await axiosClient.post('config/add/theme', formData)
+      console.log(response)
+      showToast('Theme added successfully!', 'success')
+    } catch (error) {
+      showToast('Error while adding theme', 'error')
+      console.error(error)
+    }
+  }
+
+  const handleAddTableType = async () => {
+    if (formData.table_type == '') {
+      showToast('Enter Table Type', 'info')
+      return
+    }
+
+    try {
+      const response = await axiosClient.post('config/add/table/type', formData)
+      console.log(response)
+      showToast('Table Type added successfully!', 'success')
+    } catch (error) {
+      showToast('Error while adding Table Type', 'error')
+      console.error(error)
+    }
+  }
+
+  const handleAddBackground = async () => {
+    if (formData.background == '') {
+      showToast('Enter Background', 'info')
+      return
+    }
+
+    try {
+      const response = await axiosClient.post('config/add/background', formData)
+      console.log(response)
+      showToast('Background added successfully!', 'success')
+    } catch (error) {
+      showToast('Error while adding Background', 'error')
+      console.error(error)
+    }
+  }
+
+  const handleAddLanguage = async () => {
+    if (formData.language == '') {
+      showToast('Enter Language', 'info')
+      return
+    }
+
+    try {
+      const response = await axiosClient.post('config/add/language', formData)
+      console.log(response)
+      showToast('Language added successfully!', 'success')
+    } catch (error) {
+      showToast('Error while adding Language', 'error')
+      console.error(error)
+    }
+  }
+
   const handleSubmit = async (e) => {
     if (formData.table_type == '') {
       showToast('Enter Table Name', 'info')
@@ -39,17 +100,17 @@ const Config = () => {
     }
 
     if (formData.theme == '') {
-      showToast(' Select Theme', 'info')
+      showToast('Enter Theme', 'info')
       return
     }
 
     if (formData.background == '') {
-      showToast('Select Background', 'info')
+      showToast('Enter Background', 'info')
       return
     }
 
     if (formData.language == '') {
-      showToast('Select language', 'info')
+      showToast('Enter Language', 'info')
       return
     }
 
@@ -66,91 +127,111 @@ const Config = () => {
   return (
     <div className="py-3 ">
       <h1 className="text-center py-3">Configuration</h1>
-      <div className={`${s.container} border d-flex justify-content-center `}>
-        <div className={` border w-100 d-flex justify-content-center align-items-center `}>
+      <div className={`${s.container}  d-flex justify-content-center `}>
+        <div className={` w-100 d-flex justify-content-center align-items-center `}>
           <div
-            className={`row ${s.form}  border-bottom border-2 border-top   ${
+            className={`row ${s.form} border-bottom border-2 border-top py-3 py-md-5 ${
               theme === 'dark' ? 'border-primary' : 'border-dark'
             } rounded-4 p-4 shadow-lg`}
           >
-            <div className="col-12 col-md-6 border">
-              <div className="mb-2">
-                <label className="form-label">Table Type</label>
-                <select
-                  className="form-select form-select-sm"
-                  name="table_type"
-                  value={formData.theme}
-                  onChange={handleChange}
-                  aria-label="Default select example"
-                >
-                  <option value="">Select Table</option>
-                  <option value="roulette">Roulette</option>
-                  <option value="baccarta">Baccarta</option>
-                  <option value="andar_bahar">Andar Bahar</option>
-                  <option value="three_card_pocker">Three Card Pocker</option>
-                </select>
-              </div>
-              <div className="mb-2">
-                <label className="form-label">Theme</label>
-                <select
-                  className="form-select form-select-sm"
-                  name="theme"
-                  value={formData.theme}
-                  onChange={handleChange}
-                  aria-label="Default select example"
-                >
-                  <option value="">Select Theme</option>
-                  <option value="dark">Dark</option>
-                  <option value="light">Light</option>
-                </select>
-              </div>
-            </div>
-            <div className="col-12 col-md-6">
-              <div className="mb-2">
-                <label className="form-label">Background</label>
-                <select
-                  className="form-select form-select-sm"
-                  name="background"
-                  value={formData.background}
-                  onChange={handleChange}
-                  aria-label="Default select example"
-                >
-                  <option value="">Select Background</option>
-                  <option value="dark">Dark</option>
-                  <option value="light">Light</option>
-                </select>
-              </div>
-              <div className="mb-2">
-                <label className="form-label">Language</label>
-                <select
-                  className="form-select form-select-sm"
-                  name="language"
-                  value={formData.language}
-                  onChange={handleChange}
-                  aria-label="Default select example"
-                >
-                  <option value="">Select Language</option>
-                  <option value="english">English</option>
-                  <option value="chinese">Chinese</option>
-                  <option value="german">German</option>
-                </select>
+            <div className="col-12 d-flex justify-content-center align-items-center col-md-6  border-0  border-md-1 border-md-end">
+              <div className="h-100 d-flex flex-column justify-content-evenly">
+                <div className="mb-2  ">
+                  <label className="form-label">Table Type</label>
+                  <div className="d-flex   align-items-center gap-2 flex-md-row">
+                    <input
+                      type="text"
+                      className="form-control "
+                      placeholder="Enter"
+                      name="table_type"
+                      value={formData.table_type}
+                      onChange={handleChange}
+                    />
+                    <div className="my-1 px-1 ">
+                      <button
+                        onClick={handleAddTableType}
+                        type="button"
+                        className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3`}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-2  ">
+                  <label className="form-label">Theme</label>
+                  <div className="d-flex   align-items-center gap-2 flex-md-row">
+                    <input
+                      type="text"
+                      className="form-control "
+                      placeholder="Enter"
+                      name="theme"
+                      value={formData.theme}
+                      onChange={handleChange}
+                    />
+                    <div className="my-1 px-1 ">
+                      <button
+                        onClick={handleAddtheme}
+                        type="button"
+                        className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3`}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="d-flex justify-content-center align-items-center  pt-3">
-              <button
-                type="button"
-                onClick={() => handleSubmit()}
-                className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark'} d-none d-md-block px-5`}
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSubmit()}
-                className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark'} d-block d-md-none px-5`}
-              >
-                Submit
-              </button>
+
+            <div className="col-12 d-flex justify-content-center align-items-center col-md-6 border-0  ">
+              <div className="h-100 d-flex flex-column justify-content-evenly">
+                <div className="mb-2  ">
+                  <label className="form-label">Background</label>
+                  <div className="d-flex   align-items-center gap-2 flex-md-row">
+                    <input
+                      type="text"
+                      className="form-control "
+                      placeholder="Enter"
+                      name="background"
+                      value={formData.background}
+                      onChange={handleChange}
+                    />
+                    <div className="my-1 px-1 ">
+                      <button
+                        onClick={handleAddBackground}
+                        type="button"
+                        className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3`}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-2  ">
+                  <label className="form-label">Language</label>
+                  <div className="d-flex   align-items-center gap-2 flex-md-row">
+                    <input
+                      type="text"
+                      className="form-control "
+                      placeholder="Enter"
+                      name="language"
+                      value={formData.language}
+                      onChange={handleChange}
+                    />
+                    <div className="my-1 px-1 ">
+                      <button
+                        onClick={handleAddLanguage}
+                        type="button"
+                        className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3`}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

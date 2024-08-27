@@ -1,9 +1,12 @@
 .form {
   width: 95%;
-  min-height: 80%;
 }
 .container {
   min-height: 50vh;
+}
+
+input {
+  height: 2rem;
 }
 
 @media (min-width: 576px) {
