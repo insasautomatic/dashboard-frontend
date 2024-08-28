@@ -138,9 +138,9 @@ const AppHeader = () => {
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
-      <CContainer className="px-4" fluid>
+      <div className="px-4" fluid>
         <AppBreadcrumb />
-      </CContainer>
+      </div>
     </CHeader>
   )
 }
