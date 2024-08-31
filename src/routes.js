@@ -51,10 +51,13 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
-const Roulette = React.lazy(() => import('./views/limits/Roulette/Roulette'))
-const Baccarta = React.lazy(() => import('./views/limits/Baccarta/Baccarta'))
-const AndarBahar = React.lazy(() => import('./views/limits/AndarBahar/AndarBahar'))
-const ThreeCardPocker = React.lazy(() => import('./views/limits/ThreeCardPocker/ThreeCardPocker'))
+const TableLimits = React.lazy(() => import('./views/limits/Tables/TableLimit'))
+const EditTable = React.lazy(() => import('./views/limits/Tables/EditTable'))
+const UpdateTableLimits = React.lazy(() => import('./views/settings/Configs/UpdateTableLimits'))
+const Backgrounds = React.lazy(() => import('./views/settings/Configs/Backgrounds'))
+const Themes = React.lazy(() => import('./views/settings/Configs/Themes'))
+const Languages = React.lazy(() => import('./views/settings/Configs/Languages'))
+
 const Config = React.lazy(() => import('./views/config/Config'))
 
 const Login = React.lazy(() => import('./views/pages/login/Login'))
@@ -62,12 +65,21 @@ const Login = React.lazy(() => import('./views/pages/login/Login'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/limits', name: 'Limits', element: Roulette },
+  { path: '/limits', name: 'Limits', element: TableLimits },
 
-  { path: '/limits/roulette', name: 'Roulette', element: Roulette },
-  { path: '/limits/baccarta', name: 'Baccarta', element: Baccarta },
-  { path: '/limits/andarbahar', name: 'AndarBahar', element: AndarBahar },
-  { path: '/limits/three/card/pocker', name: 'ThreeCardPocker', element: ThreeCardPocker },
+  { path: '/limits/roulette', name: 'Roulette', element: TableLimits },
+  { path: '/limits/:table/:id', name: 'TableLimits', element: TableLimits },
+  { path: '/limits/edit/table/:id', name: 'EditTable', element: EditTable },
+
+  { path: '/table/analysis/', name: 'Limits', element: TableLimits },
+
+  { path: '/table/analysis/roulette', name: 'Roulette', element: TableLimits },
+  { path: '/table/analysis/:table/:id', name: 'TableLimits', element: TableLimits },
+
+  { path: '/settings/update/table/limit', name: 'UpdateTableLimits', element: UpdateTableLimits },
+  { path: '/settings/update/background', name: 'Backgrounds', element: Backgrounds },
+  { path: '/settings/update/themes', name: 'Themes', element: Themes },
+  { path: '/settings/update/languages', name: 'Languages', element: Languages },
 
   { path: '/config', name: 'Config', element: Config },
 

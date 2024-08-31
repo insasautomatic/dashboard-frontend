@@ -11,7 +11,7 @@ const Config = () => {
 
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const [formData, setFormData] = useState({
-    table_type: '',
+    table_type_name: '',
     theme: '',
     language: '',
     background: '',
@@ -46,7 +46,7 @@ const Config = () => {
   }
 
   const handleAddTableType = async () => {
-    if (formData.table_type == '') {
+    if (formData.table_type_name == '') {
       showToast('Enter Table Type', 'info')
       return
     }
@@ -93,141 +93,270 @@ const Config = () => {
     }
   }
 
-  const handleSubmit = async (e) => {
-    if (formData.table_type == '') {
-      showToast('Enter Table Name', 'info')
-      return
-    }
-
-    if (formData.theme == '') {
-      showToast('Enter Theme', 'info')
-      return
-    }
-
-    if (formData.background == '') {
-      showToast('Enter Background', 'info')
-      return
-    }
-
-    if (formData.language == '') {
-      showToast('Enter Language', 'info')
-      return
-    }
-
-    try {
-      const response = await axiosClient.post('table/limits/add', formData)
-      console.log(response)
-      showToast('Table limit added successfully!', 'success')
-    } catch (error) {
-      showToast('Error adding table limit', 'error')
-      console.error(error)
-    }
-  }
-
   return (
-    <div className="py-3 ">
-      <h1 className="text-center py-3">Configuration</h1>
-      <div className={`${s.container}  d-flex justify-content-center `}>
-        <div className={` w-100 d-flex justify-content-center align-items-center `}>
-          <div
-            className={`row ${s.form} border-bottom border-2 border-top py-3 py-md-5 ${
-              theme === 'dark' ? 'border-primary' : 'border-dark'
-            } rounded-4 p-4 shadow-lg`}
-          >
-            <div className="col-12 d-flex justify-content-center align-items-center col-md-6  border-0  border-md-1 border-md-end">
-              <div className="h-100 d-flex flex-column justify-content-evenly">
-                <div className="mb-2  ">
-                  <label className="form-label">Table Type</label>
-                  <div className="d-flex   align-items-center gap-2 flex-md-row">
-                    <input
-                      type="text"
-                      className="form-control "
-                      placeholder="Enter"
-                      name="table_type"
-                      value={formData.table_type}
-                      onChange={handleChange}
-                    />
-                    <div className="my-1 px-1 ">
-                      <button
-                        onClick={handleAddTableType}
-                        type="button"
-                        className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3`}
-                      >
-                        Add
-                      </button>
+    <>
+      <div
+        className="modal fade"
+        id="addTableModal"
+        tabindex="-1"
+        aria-labelledby="addTableModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header border-0">
+              <h1 className="modal-title fs-5" id="addTableModalLabel">
+                Add Table Limit {formData.table_type_name}
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-footer border-0">
+              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button
+                onClick={handleAddTableType}
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#addTableModal"
+                class="btn btn-primary btn-sm"
+              >
+                Add table
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="addThemeModal"
+        tabindex="-1"
+        aria-labelledby="addThemeModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header border-0">
+              <h1 className="modal-title fs-5" id="addThemeModalLabel">
+                Add Theme {formData.theme}
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-footer border-0">
+              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button
+                onClick={handleAddtheme}
+                type="button"
+                data-bs-dismiss="modal"
+                class="btn btn-primary btn-sm"
+              >
+                Add Theme
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="addBackgroundModal"
+        tabindex="-1"
+        aria-labelledby="addBackgroundModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header border-0">
+              <h1 className="modal-title fs-5" id="addBackgroundModalLabel">
+                Add Background {formData.background}
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-footer border-0">
+              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button
+                onClick={handleAddBackground}
+                type="button"
+                data-bs-dismiss="modal"
+                class="btn btn-primary btn-sm"
+              >
+                Add Background
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="addLanguageModal"
+        tabindex="-1"
+        aria-labelledby="addLanguageModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header border-0">
+              <h1 className="modal-title fs-5" id="addLanguageModalLabel">
+                Add Language {formData.language}
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-footer border-0">
+              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button
+                onClick={handleAddLanguage}
+                type="button"
+                data-bs-dismiss="modal"
+                class="btn btn-primary btn-sm"
+              >
+                Add Language
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ///////////////////////////////////////////////////////////////////////////////////// */}
+      <div className="py-3 ">
+        <h1 className="text-center py-3">Configuration</h1>
+        <div className={`${s.container}  d-flex justify-content-center `}>
+          <div className={` w-100 d-flex justify-content-center align-items-center `}>
+            <div
+              className={`row ${s.form} border-bottom border-2 border-top py-3 py-md-5 ${
+                theme === 'dark' ? 'border-primary' : 'border-dark'
+              } rounded-4 p-4 shadow-lg`}
+            >
+              <div className="col-12 d-flex justify-content-center align-items-center col-md-6  border-0  border-md-1 border-md-end">
+                <div className="h-100 d-flex flex-column justify-content-evenly">
+                  <div className="mb-2  ">
+                    <label className="form-label">Table Type</label>
+                    <div className="d-flex   align-items-center gap-2 flex-md-row">
+                      <input
+                        type="text"
+                        className="form-control "
+                        placeholder="Enter"
+                        name="table_type_name"
+                        value={formData.table_type_name}
+                        onChange={handleChange}
+                      />
+                      <div className="my-1 px-1 ">
+                        <button
+                          data-bs-toggle="modal"
+                          data-bs-target="#addTableModal"
+                          type="button"
+                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.table_type_name == '' ? 'disabled' : ''}`}
+                        >
+                          Add
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mb-2  ">
-                  <label className="form-label">Theme</label>
-                  <div className="d-flex   align-items-center gap-2 flex-md-row">
-                    <input
-                      type="text"
-                      className="form-control "
-                      placeholder="Enter"
-                      name="theme"
-                      value={formData.theme}
-                      onChange={handleChange}
-                    />
-                    <div className="my-1 px-1 ">
-                      <button
-                        onClick={handleAddtheme}
-                        type="button"
-                        className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3`}
-                      >
-                        Add
-                      </button>
+                  <div className="mb-2  ">
+                    <label className="form-label">Theme</label>
+                    <div className="d-flex   align-items-center gap-2 flex-md-row">
+                      <input
+                        type="text"
+                        className="form-control "
+                        placeholder="Enter"
+                        name="theme"
+                        value={formData.theme}
+                        onChange={handleChange}
+                      />
+                      <div className="my-1 px-1 ">
+                        <button
+                          data-bs-toggle="modal"
+                          data-bs-target="#addThemeModal"
+                          type="button"
+                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.theme == '' ? 'disabled' : ''}`}
+                        >
+                          Add
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="col-12 d-flex justify-content-center align-items-center col-md-6 border-0  ">
-              <div className="h-100 d-flex flex-column justify-content-evenly">
-                <div className="mb-2  ">
-                  <label className="form-label">Background</label>
-                  <div className="d-flex   align-items-center gap-2 flex-md-row">
-                    <input
-                      type="text"
-                      className="form-control "
-                      placeholder="Enter"
-                      name="background"
-                      value={formData.background}
-                      onChange={handleChange}
-                    />
-                    <div className="my-1 px-1 ">
-                      <button
-                        onClick={handleAddBackground}
-                        type="button"
-                        className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3`}
-                      >
-                        Add
-                      </button>
+              <div className="col-12 d-flex justify-content-center align-items-center col-md-6 border-0  ">
+                <div className="h-100 d-flex flex-column justify-content-evenly">
+                  <div className="mb-2  ">
+                    <label className="form-label">Background</label>
+                    <div className="d-flex   align-items-center gap-2 flex-md-row">
+                      <input
+                        type="text"
+                        className="form-control "
+                        placeholder="Enter"
+                        name="background"
+                        value={formData.background}
+                        onChange={handleChange}
+                      />
+                      <div className="my-1 px-1 ">
+                        <button
+                          data-bs-toggle="modal"
+                          data-bs-target="#addBackgroundModal"
+                          type="button"
+                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.background == '' ? 'disabled' : ''}`}
+                        >
+                          Add
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mb-2  ">
-                  <label className="form-label">Language</label>
-                  <div className="d-flex   align-items-center gap-2 flex-md-row">
-                    <input
-                      type="text"
-                      className="form-control "
-                      placeholder="Enter"
-                      name="language"
-                      value={formData.language}
-                      onChange={handleChange}
-                    />
-                    <div className="my-1 px-1 ">
-                      <button
-                        onClick={handleAddLanguage}
-                        type="button"
-                        className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3`}
-                      >
-                        Add
-                      </button>
+                  <div className="mb-2  ">
+                    <label className="form-label">Language</label>
+                    <div className="d-flex   align-items-center gap-2 flex-md-row">
+                      <input
+                        type="text"
+                        className="form-control "
+                        placeholder="Enter"
+                        name="language"
+                        value={formData.language}
+                        onChange={handleChange}
+                      />
+                      <div className="my-1 px-1 ">
+                        <button
+                          data-bs-toggle="modal"
+                          data-bs-target="#addLanguageModal"
+                          type="button"
+                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.language == '' ? 'disabled' : ''}`}
+                        >
+                          Add
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -236,7 +365,7 @@ const Config = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

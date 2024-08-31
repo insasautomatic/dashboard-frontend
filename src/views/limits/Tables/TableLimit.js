@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import s from './Roulette.module.css'
+import s from './TableLimit.module.css'
 import { useSelector } from 'react-redux'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import AddRoulleteTable from './AddRoulleteTable.js'
+import AddTable from './AddTable.js'
 
 import showToast from '../../../components/Notification/ShowToast.js'
 import { useColorModes } from '@coreui/react'
 import axiosClient from '../../../axiosClient.js'
 import Tables from './Tables.js'
+import { useParams } from 'react-router-dom'
 
-const Roulette = () => {
+const TableLimits = () => {
+  const { table, id } = useParams()
   const theme = useSelector((state) => state.theme)
-  const [addNew, setAddNew] = useState(true)
+  const [addNew, setAddNew] = useState(false)
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const [formData, setFormData] = useState({
     table_name: '',
@@ -27,8 +30,11 @@ const Roulette = () => {
   })
 
   useEffect(() => {
-    console.log('roullete', theme)
-  }, [theme])
+    //console.log('roullete', theme)
+    setAddNew(false)
+    console.log('table', table)
+    console.log('id', id)
+  }, [theme, id])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -84,6 +90,10 @@ const Roulette = () => {
     }
   }
 
+  const [parent, animateParent] = useAutoAnimate()
+  const [child1, animateChild1] = useAutoAnimate()
+  const [child2, animateChild2] = useAutoAnimate()
+
   return (
     <div>
       <div className="w-100 d-flex justify-content-end ">
@@ -102,15 +112,17 @@ const Roulette = () => {
           Close
         </button>
       </div>
-      <div className={`w-100 ${addNew == true ? 'd-block' : 'd-none '}`}>
-        <AddRoulleteTable />
-      </div>
+      <div ref={parent} className="w-100 h-100">
+        <div ref={child1} className={`w-100 ${addNew == true ? 'd-block' : 'd-none '}`}>
+          <AddTable table={table} id={id} />
+        </div>
 
-      <div className={`w-100 ${addNew == false ? 'd-block' : 'd-none '}`}>
-        <Tables className="w-100 " />
+        <div ref={child2} className={`w-100 ${addNew == false ? 'd-block' : 'd-none '}`}>
+          <Tables key={id} table={table} id={id} className="w-100 " />
+        </div>
       </div>
     </div>
   )
 }
 
-export default Roulette
+export default TableLimits

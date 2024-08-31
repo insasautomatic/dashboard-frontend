@@ -39,21 +39,8 @@ const AppSidebar = () => {
               ...navItem.items,
               ...data.table_types.map((tableType) => ({
                 component: 'CNavItem',
-                name: tableType.table_type_name,
-                to: `/limits/${tableType.table_type_name}/${tableType.table_type_id}`,
-              })),
-            ],
-          }
-        }
-        if (navItem.name === 'Table Analysis') {
-          return {
-            ...navItem,
-            items: [
-              ...navItem.items,
-              ...data.table_types.map((tableType) => ({
-                component: 'CNavItem',
-                name: tableType.table_type_name,
-                to: `/table/analysis/${tableType.table_type_name}/${tableType.table_type_id}`,
+                name: tableType.table_type,
+                to: `/limits/${tableType.table_type}`,
               })),
             ],
           }
@@ -88,7 +75,7 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
-      <CSidebarHeader className="border-bottom border-secondary">
+      <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/" className=" d-flex justify-content-center w-100 ">
           <img src={logo} className="  " style={{ height: '70px' }} />
         </CSidebarBrand>
@@ -99,7 +86,7 @@ const AppSidebar = () => {
         />
       </CSidebarHeader>
       <AppSidebarNav key={key} items={navigation} />
-      <CSidebarFooter className="border-top border-secondary d-none d-lg-flex">
+      <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler
           onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
         />

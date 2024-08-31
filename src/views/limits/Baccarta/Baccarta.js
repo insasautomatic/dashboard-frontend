@@ -1,11 +1,14 @@
 import s from './Baccarta.module.css'
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import showToast from '../../../components/Notification/ShowToast.js'
 import axiosClient from '../../../axiosClient.js'
 
 const Baccarta = () => {
   const theme = useSelector((state) => state.theme)
+
+  const { string } = useParams()
 
   const [formData, setFormData] = useState({
     table_name: '',
@@ -23,6 +26,10 @@ const Baccarta = () => {
   useEffect(() => {
     console.log(theme)
   }, [theme])
+
+  useEffect(() => {
+    console.log(string)
+  }, [string])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -45,7 +52,7 @@ const Baccarta = () => {
 
   return (
     <div className="py-3">
-      <h1 className="text-center py-3">Baccarta</h1>
+      <h1 className="text-center py-3 text-capitalize">{string}</h1>
       <div className="h-100 w-100 d-flex justify-content-center">
         <div
           className={`row ${s.form} border-bottom border-2 border-top ${
