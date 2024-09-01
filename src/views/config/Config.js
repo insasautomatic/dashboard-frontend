@@ -11,7 +11,7 @@ const Config = () => {
 
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const [formData, setFormData] = useState({
-    table_type_name: '',
+    game_type_name: '',
     theme: '',
     language: '',
     background: '',
@@ -46,7 +46,7 @@ const Config = () => {
   }
 
   const handleAddTableType = async () => {
-    if (formData.table_type_name == '') {
+    if (formData.game_type_name == '') {
       showToast('Enter Table Type', 'info')
       return
     }
@@ -106,7 +106,7 @@ const Config = () => {
           <div className="modal-content">
             <div className="modal-header border-0">
               <h1 className="modal-title fs-5" id="addTableModalLabel">
-                Add Table Limit {formData.table_type_name}
+                Add Table Limit {formData.game_type_name}
               </h1>
               <button
                 type="button"
@@ -267,8 +267,8 @@ const Config = () => {
                         type="text"
                         className="form-control "
                         placeholder="Enter"
-                        name="table_type_name"
-                        value={formData.table_type_name}
+                        name="game_type_name"
+                        value={formData.game_type_name}
                         onChange={handleChange}
                       />
                       <div className="my-1 px-1 ">
@@ -276,7 +276,7 @@ const Config = () => {
                           data-bs-toggle="modal"
                           data-bs-target="#addTableModal"
                           type="button"
-                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.table_type_name == '' ? 'disabled' : ''}`}
+                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.game_type_name == '' ? 'disabled' : ''}`}
                         >
                           Add
                         </button>

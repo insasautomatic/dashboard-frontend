@@ -16,46 +16,24 @@ const EditTable = () => {
   const [backgrounds, setBackgrounds] = useState([])
   const [tables, setTables] = useState([])
 
-  const mockTables = [
-    { table_type_id: 6, table_type: 'roullete' },
-    { table_type_id: 7, table_type: 'baccarat' },
-    { table_type_id: 8, table_type: 'andar bahar' },
-    { table_type_id: 9, table_type: 'baccarat2' },
-  ]
-
-  const mockThemes = [
-    { theme_id: 1, theme: 'dark' },
-    { theme_id: 3, theme: 'light' },
-  ]
-
-  const mockBackgrounds = [
-    { bg_id: 2, background: 'dark' },
-    { bg_id: 3, background: 'white' },
-  ]
-
-  const mockLanguages = [
-    { lang_id: 3, language: 'Chinese' },
-    { lang_id: 2, language: 'English' },
-  ]
-
   const getConfigs = async () => {
     try {
       const response = await axiosClient.get('config/get/configs')
       console.log('response', response)
 
-      const { languages, themes, backgrounds, table_types } = response.data
+      const { languages, themes, backgrounds, games } = response.data
       setLanguages(languages)
       setBackgrounds(backgrounds)
       setThemes(themes)
-      setTables(table_types)
+      setTables(games)
 
       const { data } = await axiosClient.get(`/table/limits/get/${params.id}`)
       console.log('response2', data)
       setFormData({
         ...formData,
         table_limit_name: data.result.table_limit_name,
-        table_type_name: data.result.table_type_name,
-        table_type_id: data.result.table_type_id,
+        game_name: data.result.game_name,
+        game_id: data.result.game_id,
         min_bet: data.result.min_bet,
         max_bet: data.result.max_bet,
         side_bet_min: data.result.side_bet_min,
@@ -73,8 +51,8 @@ const EditTable = () => {
   const [formData, setFormData] = useState({
     table_limit_name: '',
     table: '',
-    table_type_name: '',
-    table_type_id: '',
+    game_name: '',
+    game_id: '',
     min_bet: '',
     max_bet: '',
     side_bet_min: '',
@@ -93,8 +71,8 @@ const EditTable = () => {
 
     /*  setFormData({
       ...formData,
-      table_type_name: props.table,
-      table_type_id: props.id,
+      game_name: props.table,
+      game_id: props.id,
     }) */
   }, [])
   useEffect(() => {

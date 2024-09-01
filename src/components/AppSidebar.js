@@ -37,10 +37,10 @@ const AppSidebar = () => {
             ...navItem,
             items: [
               ...navItem.items,
-              ...data.table_types.map((tableType) => ({
+              ...data.game_types.map((tableType) => ({
                 component: 'CNavItem',
-                name: tableType.table_type_name,
-                to: `/limits/${tableType.table_type_name}/${tableType.table_type_id}`,
+                name: tableType.game_type_name,
+                to: `/limits/${tableType.game_type_name}/${tableType.game_type_id}`,
               })),
             ],
           }
@@ -50,10 +50,10 @@ const AppSidebar = () => {
             ...navItem,
             items: [
               ...navItem.items,
-              ...data.table_types.map((tableType) => ({
+              ...data.game_types.map((tableType) => ({
                 component: 'CNavItem',
-                name: tableType.table_type_name,
-                to: `/table/analysis/${tableType.table_type_name}/${tableType.table_type_id}`,
+                name: tableType.game_type_name,
+                to: `/table/analysis/${tableType.game_type_name}/${tableType.game_type_id}`,
               })),
             ],
           }

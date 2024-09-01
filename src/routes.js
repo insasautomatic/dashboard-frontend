@@ -68,8 +68,8 @@ const routes = [
   { path: '/limits', name: 'Limits', element: TableLimits },
 
   { path: '/limits/roulette', name: 'Roulette', element: TableLimits },
-  { path: '/limits/:table/:id', name: 'TableLimits', element: TableLimits },
-  { path: '/limits/edit/table/:id', name: 'EditTable', element: EditTable },
+  { path: '/limits/:game/:id', name: 'TableLimits', element: TableLimits },
+  { path: '/limits/edit/:game/:id', name: 'EditTable', element: EditTable },
 
   { path: '/table/analysis/', name: 'Limits', element: TableLimits },
 

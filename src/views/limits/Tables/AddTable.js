@@ -7,44 +7,22 @@ import showToast from '../../../components/Notification/ShowToast.js'
 import axiosClient from '../../../axiosClient.js'
 import { v4 as uuidv4 } from 'uuid'
 
-const AddRoulleteTable = (props) => {
+const AddTable = (props) => {
   const theme = useSelector((state) => state.theme)
   const [languages, setLanguages] = useState([])
   const [themes, setThemes] = useState([])
   const [backgrounds, setBackgrounds] = useState([])
-  const [tables, setTables] = useState([])
-
-  const mockTables = [
-    { table_type_id: 6, table_type: 'roullete' },
-    { table_type_id: 7, table_type: 'baccarat' },
-    { table_type_id: 8, table_type: 'andar bahar' },
-    { table_type_id: 9, table_type: 'baccarat2' },
-  ]
-
-  const mockThemes = [
-    { theme_id: 1, theme: 'dark' },
-    { theme_id: 3, theme: 'light' },
-  ]
-
-  const mockBackgrounds = [
-    { bg_id: 2, background: 'dark' },
-    { bg_id: 3, background: 'white' },
-  ]
-
-  const mockLanguages = [
-    { lang_id: 3, language: 'Chinese' },
-    { lang_id: 2, language: 'English' },
-  ]
+  const [games, setGames] = useState([])
 
   const getConfigs = async () => {
     try {
       const response = await axiosClient.get('config/get/configs')
       console.log('response', response)
-      const { languages, themes, backgrounds, table_types } = response.data
+      const { languages, themes, backgrounds, game_types } = response.data
       setLanguages(languages)
       setBackgrounds(backgrounds)
       setThemes(themes)
-      setTables(table_types)
+      setGames(game_types)
     } catch (error) {
       console.error(error)
     }
@@ -53,8 +31,8 @@ const AddRoulleteTable = (props) => {
   const [formData, setFormData] = useState({
     table_limit_name: '',
     table: '',
-    table_type_name: '',
-    table_type_id: '',
+    game_type_name: '',
+    game_type_id: '',
     min_bet: '',
     max_bet: '',
     side_bet_min: '',
@@ -72,8 +50,8 @@ const AddRoulleteTable = (props) => {
 
     setFormData({
       ...formData,
-      table_type_name: props.table,
-      table_type_id: props.id,
+      game_type_name: props.table,
+      game_type_id: props.id,
     })
   }, [props.id, props.table, props])
   useEffect(() => {
@@ -134,18 +112,6 @@ const AddRoulleteTable = (props) => {
   }
 
   const handleSubmit = async () => {
-    const {
-      table_limit_name,
-      min_bet,
-      table_type,
-      max_bet,
-      theme,
-      background,
-      side_bet_min,
-      language,
-      side_bet_max,
-    } = formData
-
     const dataToSend = {
       ...formData,
     }
@@ -231,8 +197,8 @@ const AddRoulleteTable = (props) => {
                     onChange={handleChange}
                   >
                     <option value="">Select Theme</option>
-                    {mockThemes.map((theme) => (
-                      <option key={theme.theme_id} value={theme.theme}>
+                    {themes.map((theme, i) => (
+                      <option key={i} value={theme.theme}>
                         {theme.theme}
                       </option>
                     ))}
@@ -340,4 +306,4 @@ const AddRoulleteTable = (props) => {
   )
 }
 
-export default AddRoulleteTable
+export default AddTable

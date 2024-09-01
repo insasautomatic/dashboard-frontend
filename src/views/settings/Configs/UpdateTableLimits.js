@@ -9,34 +9,31 @@ import { useNavigate } from 'react-router-dom'
 
 const UpdateTableLimits = (props) => {
   const navigate = useNavigate()
-  const [tables, setTables] = useState([])
-  const [form, setForm] = useState({ table_type_id: '', table_type_name: '' })
-  const getTables = async () => {
+  const [games, setGames] = useState([])
+  const [form, setForm] = useState({ game_type_id: '', game_type_name: '' })
+  const getGames = async () => {
     const { data } = await axiosClient.get(`/config/get/table/type`)
     console.log(data)
 
-    setTables(data.table_types)
+    setGames(data.game_types)
   }
 
   const handleSetForm = (table) => {
-    setForm({ table_type_id: table.table_type_id, table_type_name: table.table_type_name })
+    setForm({ game_type_id: table.game_type_id, game_type_name: table.game_type_name })
   }
 
   const updateTableType = async () => {
     try {
-      const { data } = await axiosClient.put(
-        `/config/update/table/type/${form.table_type_id}`,
-        form,
-      )
+      const { data } = await axiosClient.put(`/config/update/game/type/${form.game_type_id}`, form)
       console.log(data)
       showToast('Table Type updated successfully!', 'success')
-      const temp = tables
+      const temp = games
       for (let i in temp) {
-        if (temp[i].table_type_id == form.table_type_id) {
-          temp[i].table_type_name = form.table_type_name
+        if (temp[i].game_type_id == form.game_type_id) {
+          temp[i].game_type_name = form.game_type_name
         }
       }
-      setTables(temp)
+      setGames(temp)
     } catch (error) {
       console.error(error)
       showToast('Error while updating Table Type', 'error')
@@ -44,14 +41,12 @@ const UpdateTableLimits = (props) => {
   }
 
   useEffect(() => {
-    console.log('tables', tables)
+    console.log('Games', games)
     console.log('form after setting', form)
-  }, [tables, form])
+  }, [games, form])
 
   useEffect(() => {
-    getTables()
-    console.log('table', props.table)
-    console.log('id', props.id)
+    getGames()
   }, [])
   return (
     <>
@@ -75,15 +70,15 @@ const UpdateTableLimits = (props) => {
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                <label htmlFor="table_type_name" className="form-label">
+                <label htmlFor="game_type_name" className="form-label">
                   Table Type Name
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  id="table_type_name"
-                  value={form.table_type_name}
-                  onChange={(e) => setForm({ ...form, table_type_name: e.target.value })}
+                  id="game_type_name"
+                  value={form.game_type_name}
+                  onChange={(e) => setForm({ ...form, game_type_name: e.target.value })}
                 />
               </div>
             </div>
@@ -107,10 +102,10 @@ const UpdateTableLimits = (props) => {
 
       {/* ///////////////////////////////////////////////////////////////////////// */}
       <div className=" table-main  py-2 container">
-        <h2 className="text-center my-2">Tables</h2>
+        <h2 className="text-center my-2">Games</h2>
         <div className="row gap-0 w-100 px-3 ">
-          {tables.map((table, i) => (
-            <div className="col-12 col-sm-3  mb-3 mb-sm-0 mt-2">
+          {games.map((table, i) => (
+            <div key={i} className="col-12 col-sm-3  mb-3 mb-sm-0 mt-2">
               <div className="card card-hover shadow border-0  p-0  ">
                 <div className="card-body   m-0 d-flex  ">
                   <div className=" ">
@@ -118,7 +113,7 @@ const UpdateTableLimits = (props) => {
                   </div>
                   <div className=" w-100">
                     <div className="">
-                      <h5 className="card-title  capitalize">{table.table_type_name}</h5>
+                      <h5 className="card-title  capitalize">{table.game_type_name}</h5>
                       <p className="card-text capitalize "></p>
                     </div>
                     <div className=" d-flex justify-content-end ">
