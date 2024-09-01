@@ -89,43 +89,48 @@ const AddRoulleteTable = (props) => {
   }
 
   const validateform = () => {
-    if (!table_limit_name) {
+    if (!formData.table_limit_name) {
       showToast('Enter Table Name', 'info')
       return
     }
-    if (!min_bet) {
+    if (!formData.min_bet) {
       showToast('Enter Minimum Bet', 'info')
       return
     }
 
-    if (!theme) {
+    if (!formData.theme) {
       showToast('Select Theme', 'info')
       return
     }
 
-    if (!max_bet) {
+    if (!formData.max_bet) {
       showToast('Enter Maximum Bet', 'info')
       return
     }
-    if (!background) {
+    if (!formData.background) {
       showToast('Select Background', 'info')
       return
     }
-    if (!side_bet_min) {
+    if (!formData.side_bet_min) {
       showToast('Enter Side Bet Minimum', 'info')
       return
     }
-    if (!language) {
+    if (!formData.language) {
       showToast('Select Language', 'info')
       return
     }
-    if (!side_bet_max) {
+    if (!formData.side_bet_max) {
       showToast('Enter Side Bet Maximum', 'info')
       return
     }
 
-    const modal = Modal.getInstance(document.getElementById('addModal'))
-    modal.show()
+    const modalElement = document.getElementById('addModal') // Get the correct element
+    if (modalElement) {
+      const modal = new Modal(modalElement) // Initialize the modal
+      modal.show() // Show the modal
+    } else {
+      console.error('Modal element not found')
+    }
   }
 
   const handleSubmit = async () => {

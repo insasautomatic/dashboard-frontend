@@ -27,11 +27,11 @@ const Tables = (props) => {
     console.log('id', props.id)
   }, [])
   return (
-    <div className=" table-main border py-2 container">
+    <div className=" table-main h-100  py-2 container">
       <h2 className="text-center my-2">Tables</h2>
       <div className="row gap-0 w-100 px-3 ">
         {tables.map((table, i) => (
-          <div className="col-12 col-sm-3 mb-3 mb-sm-0 mt-2">
+          <div className="col-12 col-sm-3  mb-3 mb-sm-0 mt-2">
             <div
               className="card card-hover shadow border-0  p-0  "
               style={{ backgroundColor: table.background }}

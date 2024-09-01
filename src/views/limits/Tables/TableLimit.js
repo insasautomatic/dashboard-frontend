@@ -95,8 +95,8 @@ const TableLimits = () => {
   const [child2, animateChild2] = useAutoAnimate()
 
   return (
-    <div>
-      <div className="w-100 d-flex justify-content-end ">
+    <div className="  h-100">
+      <div className="w-100 d-flex h-100 justify-content-end ">
         <button
           type="button"
           onClick={() => setAddNew(!addNew)}

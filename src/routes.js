@@ -73,8 +73,8 @@ const routes = [
 
   { path: '/table/analysis/', name: 'Limits', element: TableLimits },
 
-  { path: '/table/analysis/roulette', name: 'Roulette', element: TableLimits },
-  { path: '/table/analysis/:table/:id', name: 'TableLimits', element: TableLimits },
+  { path: '/table/analysis/roulette', name: 'Dashboard', element: Dashboard },
+  { path: '/table/analysis/:table/:id', name: 'Dashboard', element: Dashboard },
 
   { path: '/settings/update/table/limit', name: 'UpdateTableLimits', element: UpdateTableLimits },
   { path: '/settings/update/background', name: 'Backgrounds', element: Backgrounds },
