@@ -9,6 +9,11 @@ input {
   height: 2rem;
 }
 
+.red_placeholder::placeholder {
+  color: red;
+  opacity: 1; /* Ensures the color is fully applied */
+}
+
 @media (min-width: 576px) {
 }
 

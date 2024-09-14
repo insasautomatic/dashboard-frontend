@@ -14,6 +14,7 @@ import CIcon from '@coreui/icons-react'
 import { AppSidebarNav } from './AppSidebarNav'
 
 import logo from 'src/assets/brand/Dashboard.png'
+import roulleteWheel from 'src/assets/brand/roulleteWheelBlack.png'
 
 // sidebar nav config
 import nav from '../_nav'
@@ -29,7 +30,7 @@ const AppSidebar = () => {
   const getLimits = async () => {
     try {
       const { data } = await axiosClient.get('/config/get/table/type')
-      console.log('response', data)
+      // console.log('response', data)
 
       const newNavigation = navigation.map((navItem) => {
         if (navItem.name === 'Table Limits') {
@@ -69,7 +70,7 @@ const AppSidebar = () => {
   }
 
   useEffect(() => {
-    console.log('nav', navigation)
+    //console.log('nav', navigation)
   }, [navigation])
 
   useEffect(() => {
@@ -79,7 +80,7 @@ const AppSidebar = () => {
   return (
     <CSidebar
       // Force re-render when key changes
-      className="border-end"
+      className="border-end border-secondary "
       colorScheme="dark"
       position="fixed"
       unfoldable={unfoldable}
@@ -90,7 +91,7 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom border-secondary">
         <CSidebarBrand to="/" className=" d-flex justify-content-center w-100 ">
-          <img src={logo} className="  " style={{ height: '70px' }} />
+          <img src={roulleteWheel} className="  " style={{ width: '60px' }} />
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"

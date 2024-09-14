@@ -13,55 +13,12 @@
   border-radius: 10px; /* Optional: Rounded corners of the thumb */
 }
 
-.poppins-100 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 100;
-  font-style: normal;
-}
-.poppins-200 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 200;
-  font-style: normal;
-}
-.poppins-300 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 300;
-  font-style: normal;
-}
-.poppins-400 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-.poppins-500 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  font-style: normal;
-}
-
-.poppins-600 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-style: normal;
-}
-.poppins-700 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-.poppins-800 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
-  font-style: normal;
-}
-.poppins-900 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-style: normal;
-}
-
 .pointer {
   cursor: pointer;
+}
+
+.font8 {
+  font-size: 8px;
 }
 
 .font14 {
@@ -80,6 +37,10 @@
   text-transform: capitalize;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .whpx10 {
   width: 10px;
   height: 10px;
@@ -96,7 +57,7 @@
 }
 
 .icon-hover:hover {
-  transform: translateY(-3px) rotate(-15deg);
+  transform: translateY(-3px) rotate(-20deg);
   /* animation: spin 1s linear; */
 }
 
@@ -109,12 +70,30 @@
   }
 } */
 
+.el-hover {
+  transition: all 0.2s ease-in-out;
+}
+.el-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /* animation: spin 2s linear; */
+}
+
 .card-hover {
   transition: all 0.2s ease-in-out;
 }
 .card-hover:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /* animation: spin 2s linear; */
+}
+
+.card-hover2 {
+  transition: all 0.2s ease-in-out;
+}
+.card-hover2:hover {
+  transform: scale(1.1);
+
   /* animation: spin 2s linear; */
 }
 
@@ -133,8 +112,20 @@
   }
 }
 
+.drop_shadow {
+  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
+}
+
+.shadow-xs {
+  box-shadow: 1px 1px 6px 1px rgba(0, 0, 0, 0.2);
+}
+
 .shadow-s {
-  box-shadow: 2px 4px 3px 2px 4px gba(0, 0, 0, 0.1);
+  box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-m {
+  box-shadow: 10px 10px 3px 2px rgba(0, 0, 0, 0.1);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');

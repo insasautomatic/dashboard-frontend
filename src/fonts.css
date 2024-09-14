@@ -1,0 +1,226 @@
+.poppins-100 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+.poppins-200 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+.poppins-300 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+.poppins-400 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.poppins-500 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.poppins-600 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+.poppins-700 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+.poppins-800 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+.poppins-900 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+/* ///////////////////////////////////////////////////////////////////////////////////////// */
+/* montserrat */
+.mont-100 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+.mont-200 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+.mont-300 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+.mont-400 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.mont-500 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.mont-600 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+.mont-700 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+.mont-800 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+.mont-900 {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+/* ///////////////////////////////////////////////////////////////////////////////////////// */
+.quicksand-100 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+.quicksand-200 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+.quicksand-300 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+.quicksand-400 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.quicksand-500 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.quicksand-600 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+.quicksand-700 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+.quicksand-800 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+.quicksand-900 {
+  font-family: 'Quicksand', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+
+@media (max-width: 576px) {
+  .fontHeading {
+    font-size: 1.6rem;
+  }
+
+  .fontSubHeading {
+    font-size: 1.2rem;
+  }
+
+  .fontText {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 576px) {
+  .fontHeading {
+    font-size: 2rem;
+  }
+
+  .fontSubHeading {
+    font-size: 1rem;
+  }
+
+  .fontText {
+    font-size: 0.6rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .fontHeading {
+    font-size: 1.6rem;
+  }
+
+  .fontSubHeading {
+    font-size: 1rem;
+  }
+
+  .fontText {
+    font-size: 0.6rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .fontHeading {
+    font-size: 1.6rem;
+  }
+
+  .fontSubHeading {
+    font-size: 1rem;
+  }
+
+  .fontText {
+    font-size: 0.6rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .fontHeading {
+    font-size: 1.6rem;
+  }
+
+  .fontSubHeading {
+    font-size: 1rem;
+  }
+
+  .fontText {
+    font-size: 0.6rem;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import s from './Config.module.css'
 import { useSelector } from 'react-redux'
+import gsap from 'gsap'
 
 import showToast from '../../components/Notification/ShowToast.js'
 import { useColorModes } from '@coreui/react'
@@ -92,6 +93,31 @@ const Config = () => {
       console.error(error)
     }
   }
+
+  useEffect(() => {
+    gsap.fromTo(
+      '.fade-in',
+      {
+        delay: 0.5,
+        opacity: 0,
+        y: 50,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power1.out',
+      },
+    )
+    gsap.from('.animate', {
+      delay: 0.2,
+      opacity: 0,
+      y: 50,
+      duration: 0.2,
+      ease: 'power1.out',
+      stagger: 0.05,
+    })
+  }, [theme])
 
   return (
     <>
@@ -249,8 +275,8 @@ const Config = () => {
       </div>
 
       {/* ///////////////////////////////////////////////////////////////////////////////////// */}
-      <div className="py-3 ">
-        <h1 className="text-center py-3">Configuration</h1>
+      <div className={`py-3  ${theme === 'dark' ? 'text-light' : 'text-dark'} fade-in `}>
+        <h1 className="text-center animate py-3">Configuration</h1>
         <div className={`${s.container}  d-flex justify-content-center `}>
           <div className={` w-100 d-flex justify-content-center align-items-center `}>
             <div
@@ -261,12 +287,13 @@ const Config = () => {
               <div className="col-12 d-flex justify-content-center align-items-center col-md-6  border-0  border-md-1 border-md-end">
                 <div className="h-100 d-flex flex-column justify-content-evenly">
                   <div className="mb-2  ">
-                    <label className="form-label">Table Type</label>
+                    <label className="animate form-label">Table Type</label>
                     <div className="d-flex   align-items-center gap-2 flex-md-row">
                       <input
                         type="text"
-                        className="form-control "
+                        className={`form-control animate ${s.red_placeholder}`}
                         placeholder="Enter"
+                        style={{ color: 'red' }}
                         name="game_type_name"
                         value={formData.game_type_name}
                         onChange={handleChange}
@@ -276,7 +303,7 @@ const Config = () => {
                           data-bs-toggle="modal"
                           data-bs-target="#addTableModal"
                           type="button"
-                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.game_type_name == '' ? 'disabled' : ''}`}
+                          className={`btn animate ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.game_type_name == '' ? 'disabled' : ''}`}
                         >
                           Add
                         </button>
@@ -285,11 +312,11 @@ const Config = () => {
                   </div>
 
                   <div className="mb-2  ">
-                    <label className="form-label">Theme</label>
+                    <label className="animate form-label">Theme</label>
                     <div className="d-flex   align-items-center gap-2 flex-md-row">
                       <input
                         type="text"
-                        className="form-control "
+                        className="form-control animate "
                         placeholder="Enter"
                         name="theme"
                         value={formData.theme}
@@ -300,7 +327,7 @@ const Config = () => {
                           data-bs-toggle="modal"
                           data-bs-target="#addThemeModal"
                           type="button"
-                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.theme == '' ? 'disabled' : ''}`}
+                          className={`btn animate ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.theme == '' ? 'disabled' : ''}`}
                         >
                           Add
                         </button>
@@ -313,11 +340,11 @@ const Config = () => {
               <div className="col-12 d-flex justify-content-center align-items-center col-md-6 border-0  ">
                 <div className="h-100 d-flex flex-column justify-content-evenly">
                   <div className="mb-2  ">
-                    <label className="form-label">Background</label>
+                    <label className="animate form-label">Background</label>
                     <div className="d-flex   align-items-center gap-2 flex-md-row">
                       <input
                         type="text"
-                        className="form-control "
+                        className="form-control animate "
                         placeholder="Enter"
                         name="background"
                         value={formData.background}
@@ -328,7 +355,7 @@ const Config = () => {
                           data-bs-toggle="modal"
                           data-bs-target="#addBackgroundModal"
                           type="button"
-                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.background == '' ? 'disabled' : ''}`}
+                          className={`btn animate ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.background == '' ? 'disabled' : ''}`}
                         >
                           Add
                         </button>
@@ -337,11 +364,11 @@ const Config = () => {
                   </div>
 
                   <div className="mb-2  ">
-                    <label className="form-label">Language</label>
+                    <label className="animate form-label">Language</label>
                     <div className="d-flex   align-items-center gap-2 flex-md-row">
                       <input
                         type="text"
-                        className="form-control "
+                        className="form-control animate "
                         placeholder="Enter"
                         name="language"
                         value={formData.language}
@@ -352,7 +379,7 @@ const Config = () => {
                           data-bs-toggle="modal"
                           data-bs-target="#addLanguageModal"
                           type="button"
-                          className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.language == '' ? 'disabled' : ''}`}
+                          className={`btn animate ${theme === 'dark' ? 'btn-primary' : 'btn-dark '} btn-sm  px-3 ${formData.language == '' ? 'disabled' : ''}`}
                         >
                           Add
                         </button>

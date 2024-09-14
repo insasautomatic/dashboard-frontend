@@ -58,6 +58,8 @@ const Backgrounds = React.lazy(() => import('./views/settings/Configs/Background
 const Themes = React.lazy(() => import('./views/settings/Configs/Themes'))
 const Languages = React.lazy(() => import('./views/settings/Configs/Languages'))
 
+const Rough = React.lazy(() => import('./views/rough/Rough'))
+
 const Config = React.lazy(() => import('./views/config/Config'))
 
 const Login = React.lazy(() => import('./views/pages/login/Login'))
@@ -80,6 +82,8 @@ const routes = [
   { path: '/settings/update/background', name: 'Backgrounds', element: Backgrounds },
   { path: '/settings/update/themes', name: 'Themes', element: Themes },
   { path: '/settings/update/languages', name: 'Languages', element: Languages },
+
+  { path: '/rough', name: 'Rough', element: Rough },
 
   { path: '/config', name: 'Config', element: Config },
 

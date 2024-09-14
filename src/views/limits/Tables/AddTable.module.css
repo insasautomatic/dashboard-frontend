@@ -1,6 +1,11 @@
 .form {
   width: 95%;
 }
+.addtable_main {
+  min-height: calc(100vh - 7.2rem);
+}
+
+
 
 @media (min-width: 576px) {
 }

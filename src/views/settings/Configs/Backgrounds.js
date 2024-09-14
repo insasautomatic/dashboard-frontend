@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
-//import s from './UpdateTableLimits.module.css'
+import s from './Backgrounds.module.css'
 import showToast from '../../../components/Notification/ShowToast'
 import { Modal } from 'bootstrap'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useSelector } from 'react-redux'
+
+import gsap from 'gsap'
 
 import axiosClient from '../../../axiosClient'
 import roulleteWheel from 'src/assets/images/dashboard/roullete-wheel.png'
@@ -10,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 
 const UpdateBackgrounds = (props) => {
   const [parent, animateParent] = useAutoAnimate()
+  const theme = useSelector((state) => state.theme)
 
   const navigate = useNavigate()
   const [originalBackgrounds, setOriginalBackgrounds] = useState([])
@@ -72,6 +76,31 @@ const UpdateBackgrounds = (props) => {
     }
   }
 
+  useEffect(() => {
+    gsap.fromTo(
+      '.fade-in',
+      {
+        delay: 0.5,
+        opacity: 0,
+        y: 50,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power1.out',
+      },
+    )
+    gsap.from('.animate', {
+      delay: 0.2,
+      opacity: 0,
+      y: 50,
+      duration: 0.4,
+      ease: 'power1.out',
+      stagger: 0.5,
+    })
+  }, [theme])
+
   return (
     <>
       <div
@@ -93,17 +122,26 @@ const UpdateBackgrounds = (props) => {
               ></button>
             </div>
             <div className="modal-body">
-              <div className="mb-3">
-                <label htmlFor="background" className="form-label">
-                  Background Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="background"
-                  value={form.background}
-                  onChange={(e) => setForm({ ...form, background: e.target.value })}
-                />
+              <div className="mb-3 ">
+                <div className={`${s.form__group} ${s.field} `}>
+                  <input
+                    onChange={handleSearch}
+                    type="input"
+                    className={`${s.form__field} ${theme === 'dark' ? 'd-block' : 'd-none'} `}
+                    placeholder="Name"
+                    required=""
+                  />
+                  <input
+                    onChange={handleSearch}
+                    type="input"
+                    className={`${s.form__field2} ${theme === 'dark' ? 'd-none' : 'd-block'}`}
+                    placeholder="Name"
+                    required=""
+                  />
+                  <label for="name" className={`${s.form__label}`}>
+                    Search
+                  </label>
+                </div>
               </div>
             </div>
             <div className="modal-footer">
@@ -124,14 +162,16 @@ const UpdateBackgrounds = (props) => {
         </div>
       </div>
       {/* ///////////////////////////////////////////////////////////////////////// */}
-      <div className="mb-3">
-        <label htmlFor="search" className="form-label">
+      <div className={`mb-3  ${theme === 'dark' ? 'text-light' : 'text-dark'} fade-in`}>
+        <label htmlFor="search" className="form-label animate">
           Search
         </label>
-        <input type="text" className="form-control" id="search" onChange={handleSearch} />
+        <input type="text" className="form-control " id="search" onChange={handleSearch} />
       </div>
-      <div className="table-responsive">
-        <table className="table table-striped table-hover table-bordered">
+      <div className="table-responsive animate">
+        <table
+          className={`table table-striped ${theme === 'dark' ? 'table-dark' : 'table-light'} table-hover table-bordered table-sm rounded`}
+        >
           <thead>
             <tr>
               <th scope="col">Background</th>
@@ -143,15 +183,24 @@ const UpdateBackgrounds = (props) => {
             {backgrounds.map((background, i) => (
               <tr key={i}>
                 <td>{background.background}</td>
-                <td
-                  style={{ width: '10px', height: '10px', backgroundColor: background.background }}
-                ></td>
+                <td className="">
+                  <div className="" style={{ height: '1rem', width: '1rem' }}>
+                    <div
+                      className="w-100 rounded h-100"
+                      style={{
+                        width: '10px',
+                        height: '10px',
+                        backgroundColor: background.background,
+                      }}
+                    ></div>
+                  </div>
+                </td>
                 <td>
                   <i
                     onClick={() => handleSetForm(background)}
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    class="bi bi-pen-fill icon-size font-size icon pointer text-shadow icon-hover"
+                    class="bi bi-pen-fill icon-size font-size icon pointer text-shadow icon-hover "
                   ></i>
                 </td>
               </tr>

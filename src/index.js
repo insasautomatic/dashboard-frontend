@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import App from './App'
 import store from './store'
 import './index.css'
+import './fonts.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
