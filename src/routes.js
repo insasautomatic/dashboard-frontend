@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const tempDashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -58,6 +58,8 @@ const Backgrounds = React.lazy(() => import('./views/settings/Configs/Background
 const Themes = React.lazy(() => import('./views/settings/Configs/Themes'))
 const Languages = React.lazy(() => import('./views/settings/Configs/Languages'))
 
+const Dashboard = React.lazy(() => import('./views/analysis/Dashboard'))
+
 const Rough = React.lazy(() => import('./views/rough/Rough'))
 
 const Config = React.lazy(() => import('./views/config/Config'))
@@ -67,6 +69,8 @@ const Login = React.lazy(() => import('./views/pages/login/Login'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboard/:game/:game_type_id/:table_limit_id', name: 'Dashboard', element: Dashboard },
+  { path: '/temp/dashboard', name: 'tempDashboard', element: tempDashboard },
   { path: '/limits', name: 'Limits', element: TableLimits },
 
   { path: '/limits/roulette', name: 'Roulette', element: TableLimits },

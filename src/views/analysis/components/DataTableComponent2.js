@@ -11,7 +11,9 @@ const DataTableComponent2 = () => {
   const [data, setData] = useState([])
   const theme = useSelector((state) => state.theme)
 
-  useEffect(() => {}, [theme])
+  useEffect(() => {
+    console.log('dataTabkeCompomnent')
+  }, [theme])
 
   const columns = [
     {

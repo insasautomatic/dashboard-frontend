@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import s from './Tables.module.css'
 import axiosClient from '../../../axiosClient'
 import cards from 'src/assets/images/dashboard/cards.jpg'
+import roulletImage from 'src/assets/images/tables/2.png'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -129,11 +130,20 @@ const Tables = (props) => {
             style={{ opacity: 0, transform: 'translateY(50px)' }}
           >
             <div
-              className={`card-hover poppins-400 ${s.box} ${theme === 'light' ? s.black : s.blue} shadow`}
+              onClick={() =>
+                navigate(
+                  `/dashboard/${table.game_type_name}/${table.game_type_id}/${table.table_limit_id}`,
+                )
+              }
+              className={`card-hover poppins-400 ${s.box} ${theme === 'light' ? s.black : s.blue} pointer shadow`}
             >
               <div className="card border-0 overflow-hidden" style={{ width: '100%' }}>
                 <div className="overflow-hidden">
-                  <img src={cards} className="card-img-top card-hover2" alt="..." />
+                  <img
+                    src={roulletImage}
+                    className="card-img-top card-hover2 bg-dark bg-gradient drop_shadow"
+                    alt="..."
+                  />
                 </div>
                 <div className="card-body">
                   <h5 className="card-title fontSubHeading poppins-500">

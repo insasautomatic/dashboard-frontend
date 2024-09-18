@@ -65,7 +65,7 @@ const RadarChartComponent = (props) => {
   return (
     <ResponsiveContainer width="100%" height={'100%'} className="">
       <RadarChart outerRadius="80%" data={data}>
-        <Tooltip />
+        <Tooltip dataKey="name" />
         {/*   <PolarGrid /> */}
         {/* <PolarAngleAxis dataKey="name" /> */}
         {/*   <PolarRadiusAxis /> */}

@@ -1,48 +1,31 @@
 import React, { useEffect, useState, useRef } from 'react'
-import s from './Rough.module.css'
+import s from './Dashboard.module.css'
 import axiosClient from '../../axiosClient'
-import cards from 'src/assets/images/dashboard/cards.jpg'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+
 import { useSelector } from 'react-redux'
-import { CChartLine } from '@coreui/react-chartjs'
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CForm,
-  CFormCheck,
-  CFormInput,
-  CFormLabel,
-  CFormSelect,
-  CInputGroup,
-  CInputGroupText,
-  CRow,
-} from '@coreui/react'
+import { CFormInput } from '@coreui/react'
 
 import { ScrollTrigger } from 'gsap/all'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import AreaChart from './components/AreaChartComponent'
 import BarChartComponent from './components/BarChartComponent'
-import PieChartComponent from './components/PieChartComponent'
 import RadarChartComponent from './components/RadarChartComponent'
-import CoreUiLineChart from './components/CoreUiLineChart'
 
-import LineChartComponent from './components/LineChartComponent'
 import roulleteWheel from 'src/assets/images/dashboard/roulleteWheel2.png'
 import DataTableComponent from './components/DataTableComponent.js'
-import TableComponent from './components/TableComponent.js'
-import { Table } from 'react-bootstrap-icons'
+
 import DataTableComponent2 from './components/DataTableComponent2.js'
-import DoughNutChartComonent from './components/DoughNutChartComonent.js'
 import WheelPocketStatistics from './components/WheelPocketStatistics.js'
 import DropZoneStatistics from './components/DropZoneStatistics.js'
 import WinStatistics from './components/WinStatistics.js'
 
-const Rough = () => {
+const Dashboard = () => {
+  const { game, game_type_id, table_limit_id } = useParams()
+  const [tabletype, setTabletype] = useState('')
   const [data, setData] = useState([])
+  const [rouletteData, setRouletteData] = useState([])
+  const [form, setForm] = useState({})
   const theme = useSelector((state) => state.theme)
   const [themeClass, setThemeClass] = useState('bg-light text-dark border')
   const [themeBorder, setThemeBorder] = useState('bg-light text-dark border')
@@ -75,7 +58,67 @@ const Rough = () => {
     ],
   }
 
+  let myMap = new Map()
+
+  const tempRoulleteData = [
+    { name: '0', number: 0 },
+    { name: '32', number: 0 },
+    { name: '15', number: 0 },
+    { name: '19', number: 0 },
+    { name: '4', number: 0 },
+    { name: '21', number: 0 },
+    { name: '2', number: 0 },
+    { name: '25', number: 0 },
+    { name: '17', number: 0 },
+    { name: '34', number: 0 },
+    { name: '6', number: 0 },
+    { name: '27', number: 0 },
+    { name: '13', number: 0 },
+    { name: '36', number: 0 },
+    { name: '11', number: 0 },
+    { name: '30', number: 0 },
+    { name: '8', number: 0 },
+    { name: '23', number: 0 },
+    { name: '10', number: 0 },
+    { name: '5', number: 0 },
+    { name: '24', number: 0 },
+    { name: '16', number: 0 },
+    { name: '33', number: 0 },
+    { name: '1', number: 0 },
+    { name: '20', number: 0 },
+    { name: '14', number: 0 },
+    { name: '31', number: 0 },
+    { name: '9', number: 0 },
+    { name: '22', number: 0 },
+    { name: '18', number: 0 },
+    { name: '29', number: 0 },
+    { name: '7', number: 0 },
+    { name: '28', number: 0 },
+    { name: '12', number: 0 },
+    { name: '35', number: 0 },
+    { name: '3', number: 0 },
+    { name: '26', number: 0 },
+  ]
+
+  const getGameData = async () => {
+    const res = await axiosClient.get(`/game/get/${game}/${game_type_id}/${table_limit_id}`)
+
+    console.log('tempRoulleteData: ', tempRoulleteData)
+    for (let i = 0; i < res.data.result.length; i++) {
+      for (let j = 0; j < tempRoulleteData.length; j++) {
+        if (res.data.result[i].winning_number == tempRoulleteData[j].name) {
+          tempRoulleteData[j].number++
+        }
+      }
+    }
+    console.log('tempRoulleteData: ', tempRoulleteData)
+
+    setData(res.data.result)
+    setRouletteData(tempRoulleteData)
+  }
+
   useEffect(() => {
+    getGameData()
     setThemeClass(
       theme === 'dark'
         ? `bg-dark text-light border-secondary border-opacity-25 shadow-xs ${s.placeholder_grey}`
@@ -88,6 +131,11 @@ const Rough = () => {
         : `text-dark bg-light bg-gradient border border`,
     )
   }, [theme])
+
+  useEffect(() => {
+    if (data) console.log('data: ', data)
+    if (rouletteData) console.log('rouletteData: ', rouletteData)
+  }, [data, rouletteData])
 
   const tempData = [
     { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
@@ -119,27 +167,6 @@ const Rough = () => {
     ],
   }
 
-  useEffect(() => {
-    setData(temp)
-  }, [])
-
-  /*   useGSAP(() => {
-    gsap.fromTo(
-      '.fade-in',
-      {
-        delay: 0.5,
-        opacity: 0,
-        y: 50,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power1.out',
-      },
-    )
-  }, [theme]) */
-
   const config = { threshold: 0.1 }
 
   let observer = new IntersectionObserver(function (entries, self) {
@@ -162,8 +189,9 @@ const Rough = () => {
     gsap.to(targets, {
       opacity: 1,
       y: 0,
-      duration: 0.7,
+      duration: 0.6,
       stagger: 0.2,
+      ease: 'power1.out',
     })
   }
 
@@ -424,52 +452,9 @@ const Rough = () => {
               <div
                 className={`w-100  py-2   bg-light  h-100 d-flex justify-content-center align-items-center `}
               >
-                <RadarChartComponent />
+                <RadarChartComponent data={rouletteData} />
               </div>
             </div>
-            {/* <div className={`col-md-4   `}>
-              <div className="row gx-2 gy-2 h-100">
-                <div className={`col-6  box ${s.opacity} `}>
-                  <div className={`rounded el-hover  shadow-s`}>
-                    <CoreUiLineChart
-                      data={tempData2}
-                      backgroundColor="rgba(32, 94, 249,.55)"
-                      background={theme === 'dark' ? 'bg-dark' : 'bg-light'}
-                      className="w-100 "
-                    />
-                  </div>
-                </div>
-                <div className={`col-6  box ${s.opacity} `}>
-                  <div className={`rounded el-hover  shadow-s`}>
-                    <CoreUiLineChart
-                      data={tempData1}
-                      backgroundColor="rgba(255, 99, 132, 0.55)"
-                      background={theme === 'dark' ? 'bg-dark' : 'bg-light'}
-                      className="w-100 "
-                    />
-                  </div>
-                </div>
-                <div className={`col-6  box ${s.opacity} `}>
-                  <div className={`rounded el-hover  shadow-s`}>
-                    <CoreUiLineChart
-                      data={tempData1}
-                      backgroundColor="rgba(255, 99, 132, 0.55)"
-                      background={theme === 'dark' ? 'bg-dark' : 'bg-light'}
-                      className="w-100 "
-                    />
-                  </div>
-                </div>
-                <div className={`col-6  box ${s.opacity} `}>
-                  <div className={`rounded el-hover  shadow-s`}>
-                    <CoreUiLineChart
-                      backgroundColor="rgba(165, 0, 255,.55)"
-                      background={theme === 'dark' ? 'bg-dark' : 'bg-light'}
-                      className="w-100 "
-                    />
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
           <div className={`row my-3  h-100`}>
             <div className={`col-md-7    box ${s.opacity}`}>
@@ -478,7 +463,7 @@ const Rough = () => {
                   <div>Title</div>
                 </div>
                 <div className="w-100  d-flex justify-content-center align-items-center  h-100  pe-4 pb-2">
-                  <BarChartComponent />
+                  <BarChartComponent data={rouletteData} />
                 </div>
               </div>
             </div>
@@ -491,48 +476,10 @@ const Rough = () => {
               <DataTableComponent2 />
             </div>
           </div>
-          {/* <div className={`row mt-3 border h-100`}>
-            <div className={`col-md-7   border `}>
-              <div
-                className={`w-100  rounded bg-light pt-4 pe-4 shadow-s border border-danger h-100 d-flex justify-content-center align-items-center`}
-              >
-                <BarChartComponent />
-              </div>
-            </div>
-            <div className={`col-md-3  min-vh-50 `}>
-              <div className={`w-100 border rounded bg-light pt-4 pe-4`}>
-                <PieChartComponent />
-              </div>
-            </div>
-            <div className={`col-md-2  min-vh-50 `}>
-              <div className={`w-100 border rounded bg-light pt-4 pe-4`}>
-                <RadarChartComponent />
-              </div>
-            </div>
-          </div>
-          <div className={`row mt-3`}>
-            <div
-              className={`col-md-4  min-vh-50 d-flex justify-content-center align-items-center  `}
-            >
-              <div className={`w-100 border rounded bg-light pt-4 pe-4`}>
-                <AreaChart />
-              </div>
-            </div>
-            <div className={`col-md-2  min-vh-50 `}>
-              <div className={`w-100 border rounded bg-light pt-4 pe-4`}>
-                <BarChartComponent data={tempData} />
-              </div>
-            </div>
-            <div className={`col-md-4  min-vh-50 `}>
-              <div className={`w-100 border rounded bg-light pt-4 pe-4`}>
-                <LineChartComponent />
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
   )
 }
 
-export default Rough
+export default Dashboard

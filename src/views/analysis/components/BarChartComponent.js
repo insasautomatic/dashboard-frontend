@@ -18,43 +18,43 @@ const BarChartComponent = (props) => {
   const [textColor, setTextColor] = useState('rgb(11, 94, 215)')
   const [stroke, setStroke] = useState('rgb(11, 94, 215)')
   const tempData = [
-    { name: '0', uv: 222, color: 'rgb(20, 206, 67)' },
-    { name: '32', uv: 111, color: 'rgb(76,82,255)' },
-    { name: '15', uv: 222, color: 'rgb(76,82,255)' },
-    { name: '19', uv: 233, color: 'rgb(76,82,255)' },
-    { name: '4', uv: 344, color: 'rgb(76,82,255)' },
-    { name: '21', uv: 155, color: 'rgb(76,82,255)' },
-    { name: '2', uv: 266, color: 'rgb(76,82,255)' },
-    { name: '25', uv: 777, color: 'rgb(76,82,255)' },
-    { name: '17', uv: 588, color: 'rgb(76,82,255)' },
-    { name: '34', uv: 336, color: 'rgb(76,82,255)' },
-    { name: '24', uv: 699, color: 'rgb(76,82,255)' },
-    { name: '6', uv: 810, color: 'rgb(76,82,255)' },
-    { name: '27', uv: 411, color: 'rgb(76,82,255)' },
-    { name: '13', uv: 912, color: 'rgb(76,82,255)' },
-    { name: '36', uv: 313, color: 'rgb(76,82,255)' },
-    { name: '11', uv: 414, color: 'rgb(76,82,255)' },
-    { name: '30', uv: 515, color: 'rgb(76,82,255)' },
-    { name: '8', uv: 216, color: 'rgb(76,82,255)' },
-    { name: '23', uv: 117, color: 'rgb(76,82,255)' },
-    { name: '10', uv: 318, color: 'rgb(76,82,255)' },
-    { name: '5', uv: 919, color: 'rgb(76,82,255)' },
-    { name: '24', uv: 70, color: 'rgb(76,82,255)' },
-    { name: '16', uv: 221, color: 'rgb(76,82,255)' },
-    { name: '33', uv: 322, color: 'rgb(76,82,255)' },
-    { name: '1', uv: 223, color: 'rgb(76,82,255)' },
-    { name: '20', uv: 524, color: 'rgb(76,82,255)' },
-    { name: '14', uv: 725, color: 'rgb(76,82,255)' },
-    { name: '31', uv: 126, color: 'rgb(76,82,255)' },
-    { name: '9', uv: 427, color: 'rgb(76,82,255)' },
-    { name: '22', uv: 428, color: 'rgb(76,82,255)' },
-    { name: '18', uv: 529, color: 'rgb(76,82,255)' },
-    { name: '29', uv: 930, color: 'rgb(76,82,255)' },
-    { name: '7', uv: 315, color: 'rgb(76,82,255)' },
-    { name: '28', uv: 432, color: 'rgb(76,82,255)' },
-    { name: '12', uv: 333, color: 'rgb(76,82,255)' },
-    { name: '3', uv: 134, color: 'rgb(76,82,255)' },
-    { name: '26', uv: 335, color: 'rgb(76,82,255)' },
+    { name: '0', number: 222, color: 'rgb(20, 206, 67)' },
+    { name: '32', number: 111, color: 'rgb(76,82,255)' },
+    { name: '15', number: 222, color: 'rgb(76,82,255)' },
+    { name: '19', number: 233, color: 'rgb(76,82,255)' },
+    { name: '4', number: 344, color: 'rgb(76,82,255)' },
+    { name: '21', number: 155, color: 'rgb(76,82,255)' },
+    { name: '2', number: 266, color: 'rgb(76,82,255)' },
+    { name: '25', number: 777, color: 'rgb(76,82,255)' },
+    { name: '17', number: 588, color: 'rgb(76,82,255)' },
+    { name: '34', number: 336, color: 'rgb(76,82,255)' },
+    { name: '24', number: 699, color: 'rgb(76,82,255)' },
+    { name: '6', number: 810, color: 'rgb(76,82,255)' },
+    { name: '27', number: 411, color: 'rgb(76,82,255)' },
+    { name: '13', number: 912, color: 'rgb(76,82,255)' },
+    { name: '36', number: 313, color: 'rgb(76,82,255)' },
+    { name: '11', number: 414, color: 'rgb(76,82,255)' },
+    { name: '30', number: 515, color: 'rgb(76,82,255)' },
+    { name: '8', number: 216, color: 'rgb(76,82,255)' },
+    { name: '23', number: 117, color: 'rgb(76,82,255)' },
+    { name: '10', number: 318, color: 'rgb(76,82,255)' },
+    { name: '5', number: 919, color: 'rgb(76,82,255)' },
+    { name: '24', number: 70, color: 'rgb(76,82,255)' },
+    { name: '16', number: 221, color: 'rgb(76,82,255)' },
+    { name: '33', number: 322, color: 'rgb(76,82,255)' },
+    { name: '1', number: 223, color: 'rgb(76,82,255)' },
+    { name: '20', number: 524, color: 'rgb(76,82,255)' },
+    { name: '14', number: 725, color: 'rgb(76,82,255)' },
+    { name: '31', number: 126, color: 'rgb(76,82,255)' },
+    { name: '9', number: 427, color: 'rgb(76,82,255)' },
+    { name: '22', number: 428, color: 'rgb(76,82,255)' },
+    { name: '18', number: 529, color: 'rgb(76,82,255)' },
+    { name: '29', number: 930, color: 'rgb(76,82,255)' },
+    { name: '7', number: 315, color: 'rgb(76,82,255)' },
+    { name: '28', number: 432, color: 'rgb(76,82,255)' },
+    { name: '12', number: 333, color: 'rgb(76,82,255)' },
+    { name: '3', number: 134, color: 'rgb(76,82,255)' },
+    { name: '26', number: 335, color: 'rgb(76,82,255)' },
   ]
 
   useEffect(() => {
@@ -67,7 +67,11 @@ const BarChartComponent = (props) => {
     }
 
     if (props.data) {
-      setData(props.data)
+      for (let i = 0; i < props.data.length; i++) {
+        tempData[i].name = props.data[i].name
+        tempData[i].number = props.data[i].number
+      }
+      setData(tempData)
     } else {
       setData(tempData)
     }
@@ -107,24 +111,19 @@ const BarChartComponent = (props) => {
 
         <Bar
           type="monotone "
-          dataKey="uv"
+          dataKey="number"
           stroke="rgb(76, 82, 255)"
           fill="rgb(76, 82, 255)"
           radius={[4, 4, 0, 0]}
           barSize={7}
         >
-          {data.map(
-            (entry, index) => (
-              console.log('index', index == 0 ? 'rgb(20, 206, 67)' : 'rgb(76, 82, 255)'),
-              (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={index === 0 ? 'rgb(20, 206, 67)' : 'rgb(76, 82, 255)'}
-                  stroke={index === 0 ? 'rgb(20, 206, 67)' : 'rgb(76, 82, 255)'}
-                />
-              )
-            ),
-          )}
+          {data.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={index === 0 ? 'rgb(20, 206, 67)' : 'rgb(76, 82, 255)'}
+              stroke={index === 0 ? 'rgb(20, 206, 67)' : 'rgb(76, 82, 255)'}
+            />
+          ))}
         </Bar>
       </BarChart>
     </ResponsiveContainer>

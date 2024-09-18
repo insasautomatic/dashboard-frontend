@@ -17,13 +17,7 @@
   cursor: pointer;
 }
 
-.font8 {
-  font-size: 8px;
-}
 
-.font14 {
-  font-size: 10px;
-}
 
 .icon-size {
   font-size: 0.8rem;
@@ -75,6 +69,15 @@
 }
 .el-hover:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /* animation: spin 2s linear; */
+}
+
+.el-hover2 {
+  transition: all 0.2s ease-in-out;
+}
+.el-hover2:hover {
+  transform: scale(1.1);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   /* animation: spin 2s linear; */
 }
