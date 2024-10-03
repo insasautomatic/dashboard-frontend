@@ -58,7 +58,8 @@ const Backgrounds = React.lazy(() => import('./views/settings/Configs/Background
 const Themes = React.lazy(() => import('./views/settings/Configs/Themes'))
 const Languages = React.lazy(() => import('./views/settings/Configs/Languages'))
 
-const Dashboard = React.lazy(() => import('./views/analysis/Dashboard'))
+const RouletteDashboard = React.lazy(() => import('./views/analysis/Roulette/RouletteDashboard'))
+const BaccaratDashboard = React.lazy(() => import('./views/analysis/Baccarat/BaccaratDashboard.js'))
 
 const Rough = React.lazy(() => import('./views/rough/Rough'))
 
@@ -68,8 +69,22 @@ const Login = React.lazy(() => import('./views/pages/login/Login'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/dashboard/:game/:game_type_id/:table_limit_id', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboard', name: 'Dashboard', element: tempDashboard },
+  {
+    path: '/dashboard/roulette/:game/:table_limit_name/:game_type_id/:table_limit_id',
+    name: 'Dashboard',
+    element: RouletteDashboard,
+  },
+  {
+    path: '/dashboard/baccarat/:game/:table_limit_name/:game_type_id/:table_limit_id',
+    name: 'Dashboard',
+    element: BaccaratDashboard,
+  },
+  {
+    path: '/dashboard/:game/:table_limit_name/:game_type_id/:table_limit_id',
+    name: 'Dashboard',
+    element: RouletteDashboard,
+  },
   { path: '/temp/dashboard', name: 'tempDashboard', element: tempDashboard },
   { path: '/limits', name: 'Limits', element: TableLimits },
 
@@ -79,8 +94,8 @@ const routes = [
 
   { path: '/table/analysis/', name: 'Limits', element: TableLimits },
 
-  { path: '/table/analysis/roulette', name: 'Dashboard', element: Dashboard },
-  { path: '/table/analysis/:table/:id', name: 'Dashboard', element: Dashboard },
+  { path: '/table/analysis/roulette', name: 'Dashboard', element: RouletteDashboard },
+  { path: '/table/analysis/:table/:id', name: 'Dashboard', element: RouletteDashboard },
 
   { path: '/settings/update/table/limit', name: 'UpdateTableLimits', element: UpdateTableLimits },
   { path: '/settings/update/background', name: 'Backgrounds', element: Backgrounds },

@@ -12,18 +12,22 @@ import {
   Legend,
 } from 'recharts'
 
-const DoughNutChartComonent = () => {
+const DoughNutChartComonent = (props) => {
   const [data, setData] = useState([])
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#808000', '#C39BD3', '#FF8042']
   const tempData = [
-    { name: ' z1', amt: 1700 },
-    { name: ' z2', amt: 1210 },
-    { name: ' z3', amt: 2290 },
+    { name: ' z1', number: 1700 },
+    { name: ' z2', number: 1210 },
+    { name: ' z3', number: 2290 },
   ]
 
   useEffect(() => {
-    setData(tempData)
-  }, [])
+    if (props.pieData) {
+      setData(props.pieData)
+    } else {
+      setData(tempData)
+    }
+  }, [props])
 
   const RADIAN = Math.PI / 180
   const renderCustomizedLabel = ({
@@ -43,7 +47,7 @@ const DoughNutChartComonent = () => {
       <text
         x={x}
         y={y}
-        fill="#f2efef"
+        fill="white"
         textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
       >
@@ -60,7 +64,7 @@ const DoughNutChartComonent = () => {
 
         <Pie
           data={data}
-          dataKey="amt"
+          dataKey="number"
           innerRadius={15}
           outerRadius={40}
           labelLine={false}

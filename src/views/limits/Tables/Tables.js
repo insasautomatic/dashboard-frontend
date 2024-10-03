@@ -3,7 +3,12 @@ import s from './Tables.module.css'
 import axiosClient from '../../../axiosClient'
 import cards from 'src/assets/images/dashboard/cards.jpg'
 import roulletImage from 'src/assets/images/tables/2.png'
-import { useNavigate } from 'react-router-dom'
+import baccaratBlue from 'src/assets/images/tables/baccarat_blue.png'
+import baccaratGreen from 'src/assets/images/tables/baccarat_green.png'
+import baccaratPink from 'src/assets/images/tables/baccarat_pink.png'
+import baccaratRed from 'src/assets/images/tables/baccarat_red.png'
+
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { ScrollTrigger } from 'gsap/all'
@@ -18,6 +23,8 @@ const Tables = (props) => {
   const [tables, setTables] = useState([])
   const [originaltables, setOriginalTables] = useState([])
   const [search, setSearch] = useState('')
+
+  const baccarat = [baccaratBlue, baccaratGreen, baccaratPink, baccaratRed]
 
   const getTables = async () => {
     try {
@@ -38,6 +45,20 @@ const Tables = (props) => {
       )
       setTables(filtered)
       setSearch(value)
+    }
+  }
+
+  const handleViewDashboard = (game_type_name, table_limit_name, game_type_id, table_limit_id) => {
+    
+    if (props.table.toLowerCase().includes('roulette')) {
+      navigate(
+        `/dashboard/roulette/${game_type_name}/${table_limit_name}/${game_type_id}/${table_limit_id}`,
+      )
+    }
+    if (props.table.toLowerCase().includes('baccarat')) {
+      navigate(
+        `/dashboard/baccarat/${game_type_name}/${table_limit_name}/${game_type_id}/${table_limit_id}`,
+      )
     }
   }
 
@@ -130,26 +151,52 @@ const Tables = (props) => {
             style={{ opacity: 0, transform: 'translateY(50px)' }}
           >
             <div
-              onClick={() =>
-                navigate(
-                  `/dashboard/${table.game_type_name}/${table.game_type_id}/${table.table_limit_id}`,
-                )
-              }
               className={`card-hover poppins-400 ${s.box} ${theme === 'light' ? s.black : s.blue} pointer shadow`}
             >
+              {/*   navigate(
+                  `/dashboard/${table.game_type_name}/${table.table_limit_name}/${table.game_type_id}/${table.table_limit_id}`,
+                ) */}
               <div className="card border-0 overflow-hidden" style={{ width: '100%' }}>
                 <div className="overflow-hidden">
                   <img
-                    src={roulletImage}
+                    src={props.table == 'roulette' ? roulletImage : baccarat[i % 3]}
                     className="card-img-top card-hover2 bg-dark bg-gradient drop_shadow"
                     alt="..."
+                    onClick={() =>
+                      handleViewDashboard(
+                        table.game_type_name,
+                        table.table_limit_name,
+                        table.game_type_id,
+                        table.table_limit_id,
+                      )
+                    }
                   />
                 </div>
                 <div className="card-body">
-                  <h5 className="card-title fontSubHeading poppins-500">
+                  <h5
+                    onClick={() =>
+                      handleViewDashboard(
+                        table.game_type_name,
+                        table.table_limit_name,
+                        table.game_type_id,
+                        table.table_limit_id,
+                      )
+                    }
+                    className="card-title fontSubHeading poppins-500"
+                  >
                     {table.table_limit_name}
                   </h5>
-                  <p className="card-text">
+                  <p
+                    onClick={() =>
+                      handleViewDashboard(
+                        table.game_type_name,
+                        table.table_limit_name,
+                        table.game_type_id,
+                        table.table_limit_id,
+                      )
+                    }
+                    className="card-text"
+                  >
                     Game: {table.game_type_name} <br /> Language: {table.language}
                   </p>
                   <div className="d-flex justify-content-end">

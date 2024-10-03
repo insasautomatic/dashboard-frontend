@@ -172,6 +172,26 @@
   font-size: 14px;
 }
 
+.font16 {
+  font-size: 16px;
+}
+
+.font18 {
+  font-size: 18px;
+}
+
+.font20 {
+  font-size: 20px;
+}
+
+.font22 {
+  font-size: 22px;
+}
+
+.font24 {
+  font-size: 24px;
+}
+
 @media (max-width: 576px) {
   .fontHeading {
     font-size: 1.6rem;
@@ -181,8 +201,18 @@
     font-size: 1.2rem;
   }
 
+  .fontTextHeading {
+    font-size: 11px;
+  }
   .fontText {
-    font-size: 1rem;
+    font-size: 9px;
+  }
+
+  .font12 {
+    font-size: 9px;
+  }
+  .font14 {
+    font-size: 11px;
   }
 }
 @media (min-width: 576px) {
@@ -194,8 +224,14 @@
     font-size: 1rem;
   }
 
+  .fontTextHeading {
+    font-size: 12px;
+  }
   .fontText {
-    font-size: 0.6rem;
+    font-size: 10px;
+  }
+  .font14 {
+    font-size: 12px;
   }
 }
 
@@ -209,7 +245,13 @@
   }
 
   .fontText {
-    font-size: 0.6rem;
+    font-size: 10px;
+  }
+  .font14 {
+    font-size: 13px;
+  }
+  .fontTextHeading {
+    font-size: 13px;
   }
 }
 
@@ -222,8 +264,17 @@
     font-size: 1rem;
   }
 
+  .fontTextHeading {
+    font-size: 13px;
+  }
   .fontText {
-    font-size: 0.6rem;
+    font-size: 10px;
+  }
+  .font12 {
+    font-size: 10px;
+  }
+  .font14 {
+    font-size: 13px;
   }
 }
 
@@ -236,7 +287,39 @@
     font-size: 0.9rem;
   }
 
+  .fontTextHeading {
+    font-size: 14px;
+  }
   .fontText {
-    font-size: 0.6rem;
+    font-size: 12px;
+  }
+  .font12 {
+    font-size: 12px;
+  }
+  .font14 {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .fontHeading {
+    font-size: 1.6rem;
+  }
+
+  .fontSubHeading {
+    font-size: 0.9rem;
+  }
+
+  .fontTextHeading {
+    font-size: 14px;
+  }
+  .fontText {
+    font-size: 14px;
+  }
+  .font12 {
+    font-size: 12px;
+  }
+  .font14 {
+    font-size: 14px;
   }
 }

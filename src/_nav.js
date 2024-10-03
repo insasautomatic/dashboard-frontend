@@ -20,11 +20,11 @@ const _nav = [
     className: 'text-capitalize',
     icon: <FileSpreadsheetFill className="nav-icon text-light" />,
     items: [
-      {
+      /* {
         component: CNavItem,
         name: 'Roulette',
         to: '/limits/roulette',
-      },
+      }, */
     ],
   },
   {
