@@ -62,6 +62,7 @@ const RouletteDashboard = React.lazy(() => import('./views/analysis/Roulette/Rou
 const BaccaratDashboard = React.lazy(() => import('./views/analysis/Baccarat/BaccaratDashboard.js'))
 
 const Rough = React.lazy(() => import('./views/rough/Rough'))
+const Rough2 = React.lazy(() => import('./views/rough/Rough2'))
 
 const Config = React.lazy(() => import('./views/config/Config'))
 
@@ -103,6 +104,7 @@ const routes = [
   { path: '/settings/update/languages', name: 'Languages', element: Languages },
 
   { path: '/rough', name: 'Rough', element: Rough },
+  { path: '/rough2', name: 'Rough2', element: Rough2 },
 
   { path: '/config', name: 'Config', element: Config },
 

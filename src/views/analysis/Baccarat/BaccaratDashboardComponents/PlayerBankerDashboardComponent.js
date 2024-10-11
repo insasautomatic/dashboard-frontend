@@ -2,45 +2,223 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import s from './PlayerBankerData.module.css'
 import card from 'src/assets/images/baccarat/card.png'
+import Select from 'react-select'
+import { Cards, ShoeSideWin } from './BaccaratData.js'
+import PieChartComponent from './PieChartComponent'
+import DoughnutChartComponent from './DoughnutChartComponent'
+import BarChartComponent from './BarChartComponent.js'
+import axiosClient from '../../../../axiosClient.js'
 
 const PlayerBankerDashboardComponent = (props) => {
   const theme = useSelector((state) => state.theme)
+  const [themeClass, setThemeClass] = useState('bg-light text-dark border')
+  const [themeBorder, setThemeBorder] = useState('bg-light text-dark border')
+
+  /* const options = [
+    { value: 20, label: 20 },
+    { value: 19, label: 19 },
+    { value: 18, label: 18 },
+    { value: 17, label: 17 },
+    { value: 16, label: 16 },
+    { value: 15, label: 15 },
+    { value: 14, label: 14 },
+  ] */
+
+  useEffect(() => {
+    setThemeClass(
+      theme === 'dark'
+        ? `bg-dark text-light border-secondary border-opacity-25 shadow-xs ${s.placeholder_grey}`
+        : `text-dark  border border `,
+    )
+
+    setThemeBorder(
+      theme === 'dark'
+        ? `bg-dark bg-gradient bg-opacity-25  text-light border-secondary  border-opacity-50  ${s.placeholder_grey}`
+        : `text-dark bg-light bg-gradient border `,
+    )
+  }, [theme])
+
   const [renderKey, setRenderKey] = useState(0)
   const [index, setIndex] = useState(0)
   const [currentShoe, setCurrentShoe] = useState(null)
+  const [currentOption, setCurrentOption] = useState(null)
   const [currentShoeData, setCurrentShoeData] = useState([])
   const [shoeData, setShoeData] = useState([])
+  const [shoes, setShoes] = useState([{ value: null, label: null }])
+  const [options, setOptions] = useState([{ value: 0, label: 0 }])
+  const [shoeDataSize, setShoeDataSize] = useState(0)
+  const [sideWin, setSideWin] = useState(ShoeSideWin)
+  const [bankerVsPlayer, setBankerVsPlayer] = useState([
+    { name: 'Banker', value: 0 },
+    { name: 'Player', value: 0 },
+    { name: 'Tie', value: 0 },
+  ])
+  const [doughnutData, setDoughnutData] = useState([
+    { name: 'Banker Streak', value: 0 },
+    { name: 'Player Streak', value: 0 },
+    { name: 'Banker Pair', value: 0 },
+    { name: 'Player Pair', value: 0 },
+  ])
+
+  const processData = (shoeData) => {
+    console.log('processData: ', shoeData)
+    for (let i in ShoeSideWin) {
+      ShoeSideWin[i].value = 0
+    }
+
+    setShoeDataSize(shoeData.length)
+    let shoes = []
+    let tempShoe = shoeData[0].shoe_no
+    let tempData = []
+    let data = []
+    let sideWin = ShoeSideWin
+    let playerStreak = 0
+    let bankerStreak = 0
+    let playerPair = 0
+    let bankerPair = 0
+    let streak = []
+    let tempStreak = []
+    let flag = 0
+    let tempCurrentWinner = shoeData[0].winner
+    let bankerVsPlayer = [
+      { name: 'Player', value: 0 },
+      { name: 'Banker', value: 0 },
+      { name: 'Tie', value: 0 },
+    ]
+    let tempShoes = []
+
+    for (let i = 0; i < shoeData.length; i++) {
+      if (i < shoeData.length - 2 && tempCurrentWinner == shoeData[i + 1].winner) {
+        tempStreak.push(tempCurrentWinner)
+      } else {
+        if (tempStreak.length > 0) {
+          streak.push(tempStreak)
+          tempStreak = []
+        }
+        if (i < shoeData.length - 2) {
+          tempCurrentWinner = shoeData[i + 1].winner
+        }
+      }
+    }
+
+    for (let i in streak) {
+      if (streak[i][0] == 'P') {
+        playerStreak++
+      }
+      if (streak[i][0] == 'B') {
+        bankerStreak++
+      }
+    }
+
+    console.log('streak: ', streak)
+
+    for (let i = 0; i < shoeData.length; i++) {
+      if (shoeData[i].winner == 'P') bankerVsPlayer[0].value += 1
+      if (shoeData[i].winner == 'B') bankerVsPlayer[1].value += 1
+      if (shoeData[i].winner == 'T') bankerVsPlayer[2].value += 1
+
+      if (shoeData[i].playerCard1 == shoeData[i].playerCard2) playerPair += 1
+      if (shoeData[i].bankerCard1 == shoeData[i].bankerCard2) bankerPair += 1
+      if (
+        shoeData[i].playerCard3 &&
+        shoeData[i].playerCard1 != shoeData[i].playerCard2 &&
+        shoeData[i].playerCard2 == shoeData[i].playerCard3
+      ) {
+        playerPair += 1
+      }
+      if (
+        shoeData[i].bankerCard3 &&
+        shoeData[i].bankerCard1 != shoeData[i].bankerCard2 &&
+        shoeData[i].bankerCard2 == shoeData[i].bankerCard3
+      ) {
+        bankerPair += 1
+      }
+
+      if (shoeData[i].side_win == 'PP') sideWin[2].value += 1
+      if (shoeData[i].side_win == 'BP') sideWin[3].value += 1
+      if (shoeData[i].side_win == 'TG') sideWin[4].value += 1
+      if (shoeData[i].side_win == 'S6') sideWin[5].value += 1
+      if (shoeData[i].side_win == 'TGR') sideWin[6].value += 1
+      if (shoeData[i].side_win == 'TP') sideWin[7].value += 1
+      if (shoeData[i].side_win == 'TW') sideWin[8].value += 1
+      if (shoeData[i].side_win == 'TT') sideWin[9].value += 1
+      if (shoeData[i].side_win == 'BT') sideWin[10].value += 1
+      if (shoeData[i].side_win == 'ST') sideWin[11].value += 1
+      if (shoeData[i].side_win == 'BD') sideWin[12].value += 1
+      if (shoeData[i].side_win == 'SD') sideWin[13].value += 1
+      if (shoeData[i].side_win == 'DT') sideWin[14].value += 1
+    }
+
+    sideWin[0].value = playerStreak
+    sideWin[1].value = bankerStreak
+
+    const doughnutData = [
+      { name: 'Player Streak', value: playerStreak },
+      { name: 'Banker Streak', value: bankerStreak },
+
+      { name: 'Player Pair', value: playerPair },
+      { name: 'Banker Pair', value: bankerPair },
+    ]
+    //console.log('bankerVsPlayer', bankerVsPlayer)
+    //console.log('doughnutData', doughnutData)
+    console.log('sideWin', sideWin)
+
+    setShoes(tempShoes)
+    setBankerVsPlayer(bankerVsPlayer)
+    setDoughnutData(doughnutData)
+    setSideWin(sideWin)
+  }
 
   useEffect(() => {
-    setCurrentShoe(props.shoes[0])
+    let tempOptions = []
+    let tempCurrShoe = null
 
-    console.log('props.shoeData[0].data[0].playerSplit[0].j', props.shoeData)
+    if (localStorage.getItem('currentShoe') !== '') {
+      //  const currentShoe = localStorage.getItem('currentShoe')
+      let flag = 0
+      for (let i = 0; i < props.shoes.length; i++) {
+        if (props.shoes[i] == currentShoe) {
+          setCurrentShoe(currentShoe)
+          setCurrentOption({ label: currentShoe, value: currentShoe })
+          tempCurrShoe = currentShoe
+          flag = 1
+        }
+      }
+      if (flag == 0) {
+        setCurrentShoe(props.shoes[0])
+        setCurrentOption({ label: props.shoes[0], value: props.shoes[0] })
+        tempCurrShoe = props.shoes[0]
+      }
+    } else {
+      setCurrentShoe(props.shoes[0])
+      setCurrentOption({ label: props.shoes[0], value: props.shoes[0] })
+      tempCurrShoe = props.shoes[0]
+    }
+
+    //console.log('props.shoeData[0].data[0].playerSplit[0].j', props.shoeData)
 
     setShoeData(props.shoeData)
     for (let i = 0; i < props.shoeData.length; i++) {
-      if (props.shoeData[i].shoe == props.shoes[0]) {
+      if (props.shoeData[i].shoe == tempCurrShoe) {
         setCurrentShoeData(props.shoeData[i].data)
+        processData(props.shoeData[i].data)
       }
     }
+    for (let i = 0; i < props.shoes.length; i++) {
+      tempOptions.push({ label: props.shoes[i], value: props.shoes[i] }) // Corrected
+    }
     setRenderKey(renderKey + 1)
+    //console.log('props.shoes: ', props.shoes)
+    // console.log('tempOptions: ', tempOptions)
+    setOptions(tempOptions)
   }, [props])
 
   useEffect(() => {
-    console.log('shoeData', shoeData)
-    console.log('currentShoeData', currentShoeData)
-  }, [currentShoeData])
-
-  const handleShoeChange = (event) => {
-    setCurrentShoe(event.target.value) // Update currentShoe with the selected value
-
-    for (let i = 0; i < shoeData.length; i++) {
-      if (shoeData[i].shoe == event.target.value) {
-        setCurrentShoeData(shoeData[i].data)
-      }
-    }
-
-    setIndex(0)
-  }
+    //console.log('shoeData', shoeData)
+    //console.log('currentShoeData', currentShoeData)
+    // console.log('currentShoe', currentShoe)
+    //console.log('currentOption: ', currentOption)
+  }, [currentShoeData, currentOption])
 
   const handleIndexChange = (event) => {
     if (event == '+') {
@@ -51,141 +229,349 @@ const PlayerBankerDashboardComponent = (props) => {
     // Update currentShoe with the selected value
   }
 
+  const handleShoeChange = (selectedOption) => {
+    console.log('handleShoeChange: ', selectedOption)
+    let flag = 0
+
+    for (let i = 0; i < shoeData.length; i++) {
+      if (shoeData[i].shoe == selectedOption.value) {
+        setCurrentShoeData(shoeData[i].data)
+        processData(shoeData[i].data)
+        setCurrentOption(selectedOption)
+        setCurrentShoe(selectedOption.value)
+        localStorage.setItem('currentShoe', selectedOption.value)
+
+        flag = 1
+      }
+    }
+    if (flag == 0) {
+      getDataByShoe(selectedOption.value)
+      localStorage.setItem('currentShoe', selectedOption.value)
+    }
+
+    setIndex(0)
+  }
+
+  const getDataByShoe = async (shoe) => {
+    console.log('getDataByShoe: ', shoe)
+
+    try {
+      const res = await axiosClient.get(
+        `/baccarat/get/by/shoe/${currentShoeData[0].game_type_id}/${currentShoeData[0].table_limit_id}/${shoe}`,
+      )
+
+      if (res) {
+        let resData = res.data.result
+
+        for (let i in resData) {
+          const tempPlayerSplit = resData[i].player_cards.split(',')
+          const tempBankerSplit = resData[i].banker_cards.split(',')
+
+          let PlayerSplit = []
+          let BankerSplit = []
+
+          //spliting cards to easy access and computations
+          resData[i].playerCard1 = tempPlayerSplit[0]
+          resData[i].playerCard2 = tempPlayerSplit[1]
+          if (tempPlayerSplit[2]) resData[i].playerCard3 = tempPlayerSplit[2]
+
+          resData[i].bankerCard1 = tempBankerSplit[0]
+          resData[i].bankerCard2 = tempBankerSplit[1]
+          if (tempBankerSplit[2]) resData[i].bankerCard3 = tempBankerSplit[2]
+        }
+
+        let tempShoeData = shoeData
+        tempShoeData.push({ shoe: shoe, data: resData })
+        setShoeData(tempShoeData)
+
+        for (let i = 0; i < tempShoeData.length; i++) {
+          if (tempShoeData[i].shoe == shoe) {
+            setCurrentShoeData(tempShoeData[i].data)
+            processData(tempShoeData[i].data)
+            setCurrentOption({ label: tempShoeData[i].shoe, value: tempShoeData[i].shoe })
+            setCurrentShoe(shoe)
+            localStorage.setItem('currentShoe', shoe)
+          }
+        }
+
+        console.log('getDataByShoe result: ', resData)
+        console.log('tempShoeData: ', tempShoeData)
+        props.getDataByShoe(res.data.result)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    console.log('shoeData', shoeData)
+  }, [shoeData])
+
   return (
     <div
       className={` ${theme === 'light' ? 'text-dark' : 'text-light'} ${shoeData ? '' : 'd-none'}`}
     >
-      <div className={``}>
+      <div className={` `}>
         {currentShoeData[0] ? (
-          <div className={`row gx-1`}>
-            <div className={`col-12 h-100 col-md-5 `}>
-              <div className={`w-100 h-75 border player  `}>
+          <div>
+            <div className={`row g-3`}>
+              <div className={`col-12 h-100 col-md-5 `}>
                 <div
-                  className={`row gx-1 w-100 h-100 d-flex justify-content-center  p-2 align-items-center font12 `}
+                  className={`w-100 h-75 player shadow-s rounded ${themeBorder} bg-gradient px-1 `}
                 >
-                  <div className={`col-4`}>
-                    <div
-                      className={`w-100  border ${s.cards}  d-flex justify-content-center align-items-center`}
+                  <div
+                    className={`d-flex justify-content-center align-items-center pt-2 py-1 fontTextHeading border-bottom border-secondary  border-opacity-25 `}
+                  >
+                    <span
+                      className={`bg-gradient bg-primary text-light border-0 bg-gradient px-2 shadow-xs poppins-500 rounded-1 `}
                     >
-                      <div className={`h-100 w-100 p-1`}>
-                        <div className={`text-center`}>{currentShoeData[index].playerCard1}</div>
+                      Player
+                    </span>
+                  </div>
+                  <div
+                    className={`row gx-1  w-100 h-100 d-flex justify-content-center  p-2 align-items-center font12 `}
+                  >
+                    <div className={`col-4`}>
+                      <div
+                        className={`w-100   ${s.cards}  d-flex justify-content-center align-items-center`}
+                      >
+                        <div className={`h-100 w-100 p-1`}>
+                          <div className={`text-center`}>{currentShoeData[index].playerCard1}</div>
 
-                        <img src={card} className="w-100" />
+                          <img src={card} className="w-100 drop_shadow" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`col-4`}>
+                      <div
+                        className={`w-100  ${s.cards}  d-flex justify-content-center align-items-center`}
+                      >
+                        <div className={`h-100 w-100 p-1`}>
+                          <div className={`text-center`}>{currentShoeData[index].playerCard2}</div>
+
+                          <img src={card} className="w-100 drop_shadow" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`col-4 ${currentShoeData[index].playerCard3 ? '' : 'd-none'}`}>
+                      <div
+                        className={`w-100  ${s.cards}  d-flex justify-content-center align-items-center `}
+                      >
+                        <div className={`h-100 w-100 p-1`}>
+                          <div className={`text-center`}>{currentShoeData[index].playerCard3}</div>
+
+                          <img src={card} className="w-100 drop_shadow" />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className={`col-4`}>
-                    <div
-                      className={`w-100 border ${s.cards}  d-flex justify-content-center align-items-center`}
-                    >
-                      <div className={`h-100 w-100 p-1`}>
-                        <div className={`text-center`}>{currentShoeData[index].playerCard2}</div>
+                </div>
+              </div>
+              <div className={`col-12  col-md-2`}>
+                <div
+                  className={` h-100  shadow-s rounded ${themeBorder} bg-gradient info p-3 d-flex flex-column justify-content-between align-items-center`}
+                >
+                  <div className={`w-100`}>
+                    <table className={`table-${theme} fontText  table-sm w-100 `}>
+                      <tbody>
+                        <tr>
+                          <td>Shoe </td>
+                          <td className={`text-end border`}>
+                            <Select
+                              className="rounded-1 "
+                              styles={{
+                                menu: (base) => ({ ...base, fontSize: '0.8rem' }),
+                                option: (base) => ({ ...base, color: 'black' }),
+                                control: (base) => ({
+                                  ...base,
+                                  fontSize: '0.8rem',
+                                  width: '100%', // Set width here
+                                  height: '10px', // Set height here
+                                }),
+                              }}
+                              value={currentOption}
+                              onChange={handleShoeChange}
+                              options={options}
+                              placeholder="Select a shoe"
+                              isSearchable={true}
+                              isClearable={false}
+                              components={{ DropdownIndicator: () => null }}
+                              theme={(theme) => ({
+                                ...theme,
+                                colors: {
+                                  ...theme.colors,
+                                  text: 'black',
+                                },
+                              })}
+                            />
+                            {/*  <select
+                            className="rounded-1 px-2"
+                            aria-label="Default select example"
+                            value={currentShoe}
+                            onChange={handleShoeChange} // Event handler for selection
+                          >
+                            {props.shoes.map((item, i) => (
+                              <option key={i} value={item}>
+                                {item}
+                              </option>
+                            ))}
+                          </select> */}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Winner</td>
+                          <td className={`text-end`}>
+                            <span
+                              className={`rounded-1 ${currentShoeData[index].winner == 'P' ? 'bg-primary' : currentShoeData[index].winner == 'B' ? 'bg-danger' : 'bg-success'} d-flex justify-content-center   px-2 text-light border-0 bg-gradient px-1 shadow-xs border border-secondary border-opacity-25`}
+                            >
+                              {currentShoeData[index].winner == 'B'
+                                ? 'Banker'
+                                : currentShoeData[index].winner == 'P'
+                                  ? 'Player'
+                                  : 'Tie'}
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Side</td>
+                          <td className={`text-end`}>
+                            <span
+                              className={`rounded-1 d-flex justify-content-center  px-2 bg-success text-light border-0 bg-gradient px-1 shadow-xs border border-secondary border-opacity-25`}
+                            >
+                              {currentShoeData[index].side_win
+                                ? currentShoeData[index].side_win
+                                : '-'}
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Total Games</td>
+                          <td className={`text-end`}>
+                            <span
+                              className={`rounded-1 d-flex justify-content-center  px-2 bg-success text-light border-0 bg-gradient px-1 shadow-xs border border-secondary border-opacity-25`}
+                            >
+                              {props.dataSize}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div
+                    className={`text-light d-flex w-100 py-1 justify-content-center gap-2 align-items-center font12 mt-2 border-top border-secondary border-opacity-25`}
+                  >
+                    <div className={``}>
+                      <button
+                        onClick={() => handleIndexChange('-')}
+                        type="button"
+                        className={`btn btn-primary btn-sm ${index == 0 ? 'd-none' : ''}`}
+                      >
+                        <i className="bi bi-chevron-left"></i>
+                      </button>
+                      <button
+                        disabled
+                        type="button"
+                        className={`btn btn-primary btn-sm ${index == 0 ? '' : 'd-none'}`}
+                      >
+                        <i className="bi bi-chevron-left"></i>
+                      </button>
+                    </div>
 
-                        <img src={card} className="w-100" />
-                      </div>
+                    <div className={`fs-4 ${theme === 'light' ? 'text-dark' : 'text-light'}`}>
+                      {index}
+                    </div>
+                    <div className={``}>
+                      <button
+                        onClick={() => handleIndexChange('+')}
+                        type="button"
+                        className={`btn btn-primary btn-sm ${index < currentShoeData.length - 1 ? '' : 'd-none'}`}
+                      >
+                        <i className="bi bi-chevron-right"></i>
+                      </button>
+                      <button
+                        disabled
+                        type="button"
+                        className={`btn btn-primary btn-sm  ${index >= currentShoeData.length - 1 ? '' : 'd-none'}`}
+                      >
+                        <i className="bi bi-chevron-right"></i>
+                      </button>
                     </div>
                   </div>
-                  <div className={`col-4 ${currentShoeData[index].playerCard3 ? '' : 'd-none'}`}>
-                    <div
-                      className={`w-100 border ${s.cards}  d-flex justify-content-center align-items-center `}
+                </div>
+              </div>
+              <div className={`col-12 h-100  col-md-5 `}>
+                <div className={`w-100 h-75  shadow-s rounded ${themeBorder} bg-gradient player  `}>
+                  <div
+                    className={`d-flex justify-content-center align-items-center pt-2 py-1 fontTextHeading border-bottom border-secondary  border-opacity-25 `}
+                  >
+                    <span
+                      className={`bg-gradient bg-danger text-light border-0 bg-gradient px-2 shadow-xs poppins-500 rounded-1 `}
                     >
-                      <div className={`h-100 w-100 p-1`}>
-                        <div className={`text-center`}>{currentShoeData[index].playerCard3}</div>
+                      Banker
+                    </span>
+                  </div>
+                  <div
+                    className={`row gx-1 w-100 h-100 d-flex justify-content-center  p-2 align-items-center font12 `}
+                  >
+                    <div className={`col-4`}>
+                      <div
+                        className={`w-100   ${s.cards}  d-flex justify-content-center align-items-center`}
+                      >
+                        <div className={`h-100 w-100 p-1`}>
+                          <div className={`text-center`}>{currentShoeData[index].bankerCard1}</div>
 
-                        <img src={card} className="w-100" />
+                          <img src={card} className="w-100 drop_shadow" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`col-4`}>
+                      <div
+                        className={`w-100  ${s.cards}  d-flex justify-content-center align-items-center`}
+                      >
+                        <div className={`h-100 w-100 p-1`}>
+                          <div className={`text-center`}>{currentShoeData[index].bankerCard2}</div>
+
+                          <img src={card} className="w-100 drop_shadow" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`col-4 ${currentShoeData[index].bankerCard3 ? '' : 'd-none'}`}>
+                      <div
+                        className={`w-100  ${s.cards}  d-flex justify-content-center align-items-center `}
+                      >
+                        <div className={`h-100 w-100 p-1`}>
+                          <div className={`text-center`}>{currentShoeData[index].bankerCard3}</div>
+
+                          <img src={card} className="w-100 drop_shadow" />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className={`col-12 col-md-2`}>
-              <div className={` h-100  border info p-3`}>
-                <table className={`table-${theme} fontText  table-sm w-100 `}>
-                  <tbody>
-                    <tr>
-                      <td>Shoe :</td>
-                      <td className={`text-end`}>
-                        <select
-                          className="rounded-1 px-2"
-                          aria-label="Default select example"
-                          value={currentShoe}
-                          onChange={handleShoeChange} // Event handler for selection
-                        >
-                          {props.shoes.map((item, i) => (
-                            <option key={i} value={item}>
-                              {item}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Winner</td>
-                      <td className={`text-end`}>
-                        <span
-                          className={`rounded-1 bg-success text-light border-0 bg-gradient px-1 shadow-xs border border-secondary border-opacity-25`}
-                        >
-                          {currentShoeData[index].winner == 'B'
-                            ? 'Banker'
-                            : currentShoeData[index].winner == 'P'
-                              ? 'Player'
-                              : 'Tie'}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Side</td>
-                      <td className={`text-end`}>
-                        <span
-                          className={`rounded-1 px-4 bg-success text-light border-0 bg-gradient px-1 shadow-xs border border-secondary border-opacity-25`}
-                        >
-                          {currentShoeData[index].side_win ? currentShoeData[index].side_win : '-'}
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div className={`w-100  mt-3 `} style={{ padding: '7px' }}>
+              <div className={`row  g-3 `}>
+                <div className={`col-12 col-md-6 box `}>
+                  <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
+                    <PieChartComponent bankerVsPlayer={bankerVsPlayer} />
+                  </div>
+                </div>
+                <div className={`col-12 col-md-6 box `}>
+                  <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
+                    <div className={``}>
+                      <DoughnutChartComponent doughnutData={doughnutData} />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className={`col-12 h-100 col-md-5 `}>
-              <div className={`w-100 h-75 border player  `}>
-                <div
-                  className={`row gx-1 w-100 h-100 d-flex justify-content-center  p-2 align-items-center font12 `}
-                >
-                  <div className={`col-4`}>
-                    <div
-                      className={`w-100  border ${s.cards}  d-flex justify-content-center align-items-center`}
-                    >
-                      <div className={`h-100 w-100 p-1`}>
-                        <div className={`text-center`}>{currentShoeData[index].bankerCard1}</div>
-
-                        <img src={card} className="w-100" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`col-4`}>
-                    <div
-                      className={`w-100 border ${s.cards}  d-flex justify-content-center align-items-center`}
-                    >
-                      <div className={`h-100 w-100 p-1`}>
-                        <div className={`text-center`}>{currentShoeData[index].bankerCard2}</div>
-
-                        <img src={card} className="w-100" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`col-4 ${currentShoeData[index].bankerCard3 ? '' : 'd-none'}`}>
-                    <div
-                      className={`w-100 border ${s.cards}  d-flex justify-content-center align-items-center `}
-                    >
-                      <div className={`h-100 w-100 p-1`}>
-                        <div className={`text-center`}>{currentShoeData[index].bankerCard3}</div>
-
-                        <img src={card} className="w-100" />
-                      </div>
-                    </div>
-                  </div>
+            <div className={`py-3 box `}>
+              <div
+                className={`py-3 row shadow-s rounded  d-flex justify-content-center ${themeBorder} bg-gradient`}
+              >
+                <div className={`col-12 col-sm-10 h-100`}>
+                  <BarChartComponent sideWin={sideWin} />
                 </div>
               </div>
             </div>
@@ -193,45 +579,6 @@ const PlayerBankerDashboardComponent = (props) => {
         ) : (
           ''
         )}
-
-        <div
-          className={`text-light d-flex justify-content-center gap-2 align-items-center font12 mt-2 `}
-        >
-          <div className={``}>
-            <button
-              onClick={() => handleIndexChange('-')}
-              type="button"
-              className={`btn btn-primary btn-sm ${index == 0 ? 'd-none' : ''}`}
-            >
-              <i className="bi bi-chevron-left"></i>
-            </button>
-            <button
-              disabled
-              type="button"
-              className={`btn btn-primary btn-sm ${index == 0 ? '' : 'd-none'}`}
-            >
-              <i className="bi bi-chevron-left"></i>
-            </button>
-          </div>
-
-          <div className={`fs-4`}>{index}</div>
-          <div className={``}>
-            <button
-              onClick={() => handleIndexChange('+')}
-              type="button"
-              className={`btn btn-primary btn-sm ${index < currentShoeData.length - 1 ? '' : 'd-none'}`}
-            >
-              <i className="bi bi-chevron-right"></i>
-            </button>
-            <button
-              disabled
-              type="button"
-              className={`btn btn-primary btn-sm  ${index >= currentShoeData.length - 1 ? '' : 'd-none'}`}
-            >
-              <i className="bi bi-chevron-right"></i>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   )

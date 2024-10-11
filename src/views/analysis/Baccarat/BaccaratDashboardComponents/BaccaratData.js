@@ -55,3 +55,39 @@ export const Cards = [
   { name: 'Queen of Clubs', shortform: 'QC' },
   { name: 'King of Clubs', shortform: 'KC' },
 ]
+
+export const SideWin = [
+  { name: 'Player Streak', short: 'PP', value: 0, color: 'rgb(55, 64, 239)' },
+  { name: 'Banker Streak', short: 'BP', value: 0, color: 'rgb(255, 43, 50)' },
+  { name: 'Player Pair', short: 'PP', value: 0, color: 'rgb(21, 115, 253)' },
+  { name: 'Banker Pair', short: 'BP', value: 0, color: 'rgb(54, 162, 235)' },
+  { name: 'Tie Game', short: 'TG', value: 0, color: 'rgb(255, 205, 86)' },
+  { name: 'Super Six', short: 'S6', value: 0, color: 'rgb(75, 192, 192)' },
+  { name: 'Tiger', short: 'TGR', value: 0, color: 'rgb(153, 102, 255)' },
+  { name: 'Tiger Pair', short: 'TP', value: 0, color: 'rgb(201, 203, 207)' },
+  { name: 'Tiger Wins', short: 'TW', value: 0, color: 'rgb(255, 159, 64)' },
+  { name: 'Tiger Tie', short: 'TT', value: 0, color: 'rgb(240, 173, 78)' },
+  { name: 'Big Tiger', short: 'BT', value: 0, color: 'rgb(255, 99, 132)' },
+  { name: 'Small Tiger', short: 'ST', value: 0, color: 'rgb(54, 162, 235)' },
+  { name: 'Big Dragon', short: 'BD', value: 0, color: 'rgb(255, 205, 86)' },
+  { name: 'Small Dragon', short: 'SD', value: 0, color: 'rgb(75, 192, 192)' },
+  { name: 'Dragon Tiger', short: 'DT', value: 0, color: 'rgb(153, 102, 255)' },
+]
+
+export const ShoeSideWin = [
+  { name: 'Player Streak', short: 'PP', value: 0, color: 'rgb(55, 64, 239)' },
+  { name: 'Banker Streak', short: 'BP', value: 0, color: 'rgb(255, 43, 50)' },
+  { name: 'Player Pair', short: 'PP', value: 0, color: 'rgb(21, 115, 253)' },
+  { name: 'Banker Pair', short: 'BP', value: 0, color: 'rgb(54, 162, 235)' },
+  { name: 'Tie Game', short: 'TG', value: 0, color: 'rgb(255, 205, 86)' },
+  { name: 'Super Six', short: 'S6', value: 0, color: 'rgb(75, 192, 192)' },
+  { name: 'Tiger', short: 'TGR', value: 0, color: 'rgb(153, 102, 255)' },
+  { name: 'Tiger Pair', short: 'TP', value: 0, color: 'rgb(201, 203, 207)' },
+  { name: 'Tiger Wins', short: 'TW', value: 0, color: 'rgb(255, 159, 64)' },
+  { name: 'Tiger Tie', short: 'TT', value: 0, color: 'rgb(240, 173, 78)' },
+  { name: 'Big Tiger', short: 'BT', value: 0, color: 'rgb(255, 99, 132)' },
+  { name: 'Small Tiger', short: 'ST', value: 0, color: 'rgb(54, 162, 235)' },
+  { name: 'Big Dragon', short: 'BD', value: 0, color: 'rgb(255, 205, 86)' },
+  { name: 'Small Dragon', short: 'SD', value: 0, color: 'rgb(75, 192, 192)' },
+  { name: 'Dragon Tiger', short: 'DT', value: 0, color: 'rgb(153, 102, 255)' },
+]

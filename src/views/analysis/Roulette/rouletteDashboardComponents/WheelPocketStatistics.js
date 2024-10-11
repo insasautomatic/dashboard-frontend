@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { rouletteDataForChi } from './RouletteData'
+import { rouletteDataForChi, rouletteDataForSelectOption } from './RouletteData'
 
 const WheelPocketStatistics = (props) => {
   const [data, setData] = useState([])
@@ -162,7 +162,7 @@ const WheelPocketStatistics = (props) => {
                           value={selectedNumber}
                           onChange={selectNumber} // Event handler for selection
                         >
-                          {rouletteDataForChi.map((item) => (
+                          {rouletteDataForSelectOption.map((item) => (
                             <option key={item.name} value={item.name}>
                               {item.name}
                             </option>

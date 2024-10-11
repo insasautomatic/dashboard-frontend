@@ -110,6 +110,7 @@ const BarChartComponent = (props) => {
         {/*  <Legend /> */}
 
         <Bar
+          className="drop_shadow"
           type="monotone "
           dataKey="number"
           stroke="rgb(76, 82, 255)"

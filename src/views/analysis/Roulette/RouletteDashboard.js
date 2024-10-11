@@ -111,9 +111,15 @@ const RouletteDashboard = () => {
     getGameData(customLimit)
   }
 
+  const callOnTimeIntervalFunc = () => {
+    if (localStorage.getItem('callOnTimeInterval') === 'true') {
+      getGameData(limit)
+    }
+  }
+
   useEffect(() => {
     const intervalId = setInterval(() => {
-      getGameData(limit) // Ensure the current limit is passed
+      callOnTimeIntervalFunc()
     }, 10000)
 
     return () => clearInterval(intervalId) // Cleanup on unmount
@@ -132,6 +138,7 @@ const RouletteDashboard = () => {
     console.log('res.data.result: ', res.data.result)
     processData(res.data.result)
     setRenderKey(renderKey + 1)
+    localStorage.setItem('callOnTimeInterval', false)
   }
 
   const getGameData = async (limitParam) => {
@@ -141,6 +148,7 @@ const RouletteDashboard = () => {
     )
     processData(res.data.result)
     setRenderKey(renderKey + 1)
+    localStorage.setItem('callOnTimeInterval', true)
   }
 
   const processData = (resData) => {
@@ -280,7 +288,7 @@ const RouletteDashboard = () => {
     >
       <div className={`fade-in  ${s.main} w-100`}>
         <div className="">
-          <h3 className="text-center text-shadow capitalize">
+          <h3 className="text-center text-shadow capitalize poppins-400">
             {table_limit_name ? table_limit_name : 'Title'}
           </h3>
           <div className="row   poppins-400">
@@ -315,7 +323,9 @@ const RouletteDashboard = () => {
                           width: '10px',
                         }}
                       ></div>
-                      <div className="font10 text-shadow text-danger opacity-75">Inactive </div>
+                      <div className="font10 poppins-700 text-shadow text-danger opacity-75">
+                        Inactive{' '}
+                      </div>
                     </div>
                   </div>
                   <div className={`mx-auto w-100 `}></div>
