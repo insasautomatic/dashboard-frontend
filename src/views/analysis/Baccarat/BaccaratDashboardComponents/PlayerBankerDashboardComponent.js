@@ -48,6 +48,7 @@ const PlayerBankerDashboardComponent = (props) => {
   const [options, setOptions] = useState([{ value: 0, label: 0 }])
   const [shoeDataSize, setShoeDataSize] = useState(0)
   const [sideWin, setSideWin] = useState(ShoeSideWin)
+  const [dataSize, setDataSize] = useState(0)
   const [bankerVsPlayer, setBankerVsPlayer] = useState([
     { name: 'Banker', value: 0 },
     { name: 'Player', value: 0 },
@@ -62,13 +63,14 @@ const PlayerBankerDashboardComponent = (props) => {
 
   const processData = (shoeData) => {
     console.log('processData: ', shoeData)
+    if (shoeData.length == 0) return
     for (let i in ShoeSideWin) {
       ShoeSideWin[i].value = 0
     }
 
     setShoeDataSize(shoeData.length)
     let shoes = []
-    let tempShoe = shoeData[0].shoe_no
+    let tempShoe = shoeData[0].shoe
     let tempData = []
     let data = []
     let sideWin = ShoeSideWin
@@ -110,7 +112,7 @@ const PlayerBankerDashboardComponent = (props) => {
       }
     }
 
-    console.log('streak: ', streak)
+    //console.log('streak: ', streak)
 
     for (let i = 0; i < shoeData.length; i++) {
       if (shoeData[i].winner == 'P') bankerVsPlayer[0].value += 1
@@ -161,7 +163,7 @@ const PlayerBankerDashboardComponent = (props) => {
     ]
     //console.log('bankerVsPlayer', bankerVsPlayer)
     //console.log('doughnutData', doughnutData)
-    console.log('sideWin', sideWin)
+    //console.log('sideWin', sideWin)
 
     setShoes(tempShoes)
     setBankerVsPlayer(bankerVsPlayer)
@@ -170,55 +172,80 @@ const PlayerBankerDashboardComponent = (props) => {
   }
 
   useEffect(() => {
+    if (!props.shoeData || props.shoeData.length === 0) {
+      // If props.shoeData is undefined or empty, don't proceed
+      console.error('shoeData is undefined or empty')
+      return
+    }
+
     let tempOptions = []
     let tempCurrShoe = null
 
-    if (localStorage.getItem('currentShoe') !== '') {
-      //  const currentShoe = localStorage.getItem('currentShoe')
+    // Fetch current shoe from localStorage if available
+    const currentShoeFromStorage = localStorage.getItem('currentShoe')
+
+    // Ensure props.shoes and props.shoeData are valid
+    if (props.shoeData && props.shoeData.length > 0) {
+      const currentShoeExists = props.shoes.some((shoe) => shoe === currentShoeFromStorage)
+
+      if (currentShoeFromStorage && currentShoeExists) {
+        setCurrentShoe(currentShoeFromStorage)
+        setCurrentOption({ label: currentShoeFromStorage, value: currentShoeFromStorage })
+        tempCurrShoe = currentShoeFromStorage
+      } else {
+        const firstShoe = props.shoes[0]
+        setCurrentShoe(firstShoe)
+        setCurrentOption({ label: firstShoe, value: firstShoe })
+        tempCurrShoe = firstShoe
+      }
+
+      // Process shoeData for the selected shoe
+      setShoeData(props.shoeData)
+      setDataSize(props.shoeData.length)
       let flag = 0
-      for (let i = 0; i < props.shoes.length; i++) {
-        if (props.shoes[i] == currentShoe) {
-          setCurrentShoe(currentShoe)
-          setCurrentOption({ label: currentShoe, value: currentShoe })
-          tempCurrShoe = currentShoe
-          flag = 1
+      let tempData = []
+
+      if (
+        localStorage.getItem('currentShoe') != null ||
+        localStorage.getItem('currentShoe') != '' ||
+        localStorage.getItem('currentShoe') != undefined
+      ) {
+        for (let i = 0; i < props.shoeData.length; i++) {
+          if (props.shoeData[i].shoe == currentShoeFromStorage) {
+            setCurrentShoeData(props.shoeData[i].data)
+
+            setCurrentShoe(props.shoeData[i].shoe)
+            setCurrentOption({ label: props.shoeData[i].shoe, value: props.shoeData[i].shoe })
+            tempCurrShoe = props.shoeData[i].shoe
+            tempData = props.shoeData[i].data
+            flag = 1
+            break
+          }
         }
       }
+
       if (flag == 0) {
-        setCurrentShoe(props.shoes[0])
-        setCurrentOption({ label: props.shoes[0], value: props.shoes[0] })
-        tempCurrShoe = props.shoes[0]
+        setCurrentShoeData(props.shoeData[0].data)
+        tempData = props.shoeData[0].data
+        tempCurrShoe = props.shoeData[0].shoe
+        localStorage.setItem('currentShoe', tempCurrShoe)
+        setCurrentShoe(props.shoeData[0].shoe)
+        setCurrentOption({ label: props.shoeData[0].shoe, value: props.shoeData[0].shoe })
       }
-    } else {
-      setCurrentShoe(props.shoes[0])
-      setCurrentOption({ label: props.shoes[0], value: props.shoes[0] })
-      tempCurrShoe = props.shoes[0]
-    }
 
-    //console.log('props.shoeData[0].data[0].playerSplit[0].j', props.shoeData)
+      processData(tempData)
 
-    setShoeData(props.shoeData)
-    for (let i = 0; i < props.shoeData.length; i++) {
-      if (props.shoeData[i].shoe == tempCurrShoe) {
-        setCurrentShoeData(props.shoeData[i].data)
-        processData(props.shoeData[i].data)
+      console.log('tempData : ', tempData)
+
+      // Build options list for the dropdown
+      for (let i = 0; i < props.shoes.length; i++) {
+        tempOptions.push({ label: props.shoes[i], value: props.shoes[i] })
       }
-    }
-    for (let i = 0; i < props.shoes.length; i++) {
-      tempOptions.push({ label: props.shoes[i], value: props.shoes[i] }) // Corrected
-    }
-    setRenderKey(renderKey + 1)
-    //console.log('props.shoes: ', props.shoes)
-    // console.log('tempOptions: ', tempOptions)
-    setOptions(tempOptions)
-  }, [props])
 
-  useEffect(() => {
-    //console.log('shoeData', shoeData)
-    //console.log('currentShoeData', currentShoeData)
-    // console.log('currentShoe', currentShoe)
-    //console.log('currentOption: ', currentOption)
-  }, [currentShoeData, currentOption])
+      setRenderKey(renderKey + 1)
+      setOptions(tempOptions)
+    }
+  }, [props.shoeData, props.shoes])
 
   const handleIndexChange = (event) => {
     if (event == '+') {
@@ -282,20 +309,21 @@ const PlayerBankerDashboardComponent = (props) => {
 
         let tempShoeData = shoeData
         tempShoeData.push({ shoe: shoe, data: resData })
+        console.log('tempShoeData: ', tempShoeData)
         setShoeData(tempShoeData)
 
         for (let i = 0; i < tempShoeData.length; i++) {
           if (tempShoeData[i].shoe == shoe) {
+            console.log("localStorage.setItem('currentShoe', shoe): ", shoe)
+            localStorage.setItem('currentShoe', shoe)
             setCurrentShoeData(tempShoeData[i].data)
             processData(tempShoeData[i].data)
             setCurrentOption({ label: tempShoeData[i].shoe, value: tempShoeData[i].shoe })
             setCurrentShoe(shoe)
-            localStorage.setItem('currentShoe', shoe)
           }
         }
 
         console.log('getDataByShoe result: ', resData)
-        console.log('tempShoeData: ', tempShoeData)
         props.getDataByShoe(res.data.result)
       }
     } catch (error) {
@@ -445,12 +473,12 @@ const PlayerBankerDashboardComponent = (props) => {
                           </td>
                         </tr>
                         <tr>
-                          <td>Total Games</td>
+                          <td>Total Shoes</td>
                           <td className={`text-end`}>
                             <span
                               className={`rounded-1 d-flex justify-content-center  px-2 bg-success text-light border-0 bg-gradient px-1 shadow-xs border border-secondary border-opacity-25`}
                             >
-                              {props.dataSize}
+                              {dataSize}
                             </span>
                           </td>
                         </tr>
@@ -500,7 +528,9 @@ const PlayerBankerDashboardComponent = (props) => {
                 </div>
               </div>
               <div className={`col-12 h-100  col-md-5 `}>
-                <div className={`w-100 h-75  shadow-s rounded ${themeBorder} bg-gradient player  `}>
+                <div
+                  className={`w-100 h-75  shadow-s rounded ${themeBorder} bg-gradient player   px-1`}
+                >
                   <div
                     className={`d-flex justify-content-center align-items-center pt-2 py-1 fontTextHeading border-bottom border-secondary  border-opacity-25 `}
                   >
@@ -554,13 +584,27 @@ const PlayerBankerDashboardComponent = (props) => {
               <div className={`row  g-3 `}>
                 <div className={`col-12 col-md-6 box `}>
                   <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
-                    <PieChartComponent bankerVsPlayer={bankerVsPlayer} />
+                    <div className={`p-2`}>
+                      <div className={`px-2 border-bottom border-secondary border-opacity-25`}>
+                        Shoe -{currentShoe}
+                      </div>
+                    </div>
+                    <div className={``}>
+                      <PieChartComponent bankerVsPlayer={bankerVsPlayer} />
+                    </div>
                   </div>
                 </div>
                 <div className={`col-12 col-md-6 box `}>
                   <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
                     <div className={``}>
-                      <DoughnutChartComponent doughnutData={doughnutData} />
+                      <div className={`p-2`}>
+                        <div className={`px-2 border-bottom border-secondary border-opacity-25`}>
+                          Shoe -{currentShoe}
+                        </div>
+                      </div>
+                      <div className={``}>
+                        <DoughnutChartComponent doughnutData={doughnutData} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -568,10 +612,17 @@ const PlayerBankerDashboardComponent = (props) => {
             </div>
             <div className={`py-3 box `}>
               <div
-                className={`py-3 row shadow-s rounded  d-flex justify-content-center ${themeBorder} bg-gradient`}
+                className={`py-1 row shadow-s rounded  d-flex justify-content-center ${themeBorder} bg-gradient`}
               >
+                <div className={``}>
+                  <div className={`border-bottom border-secondary border-opacity-25 px-2`}>
+                    Shoe -{currentShoe}
+                  </div>
+                </div>
                 <div className={`col-12 col-sm-10 h-100`}>
-                  <BarChartComponent sideWin={sideWin} />
+                  <div className={``}>
+                    <BarChartComponent sideWin={sideWin} />
+                  </div>
                 </div>
               </div>
             </div>

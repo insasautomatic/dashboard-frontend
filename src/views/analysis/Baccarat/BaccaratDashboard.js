@@ -24,7 +24,8 @@ const BaccaratDashboard = () => {
   const [renderKey, setRenderKey] = useState(0)
   const { game, table_limit_name, game_type_id, table_limit_id } = useParams()
 
-  const [data, setData] = useState([])
+  const [shoePlayerBankerComponent, setShoePlayerBankerComponent] = useState(false)
+  const [data, setData] = useState([{ shoe: 0, data: [] }])
   const [bankerVsPlayer, setBankerVsPlayer] = useState([
     { name: 'Banker', value: 0 },
     { name: 'Player', value: 0 },
@@ -67,6 +68,8 @@ const BaccaratDashboard = () => {
   const [fromDate, setFromDate] = useState('')
   const [toDate, setToDate] = useState('')
   const [rawData, setRawData] = useState([])
+  const [fromShoe, setFromShoe] = useState(0)
+  const [toShoe, setToShoe] = useState(0)
 
   useEffect(() => {
     if (limit) {
@@ -74,15 +77,10 @@ const BaccaratDashboard = () => {
     }
   }, [limit])
 
-  const getGameDataByLimit = () => {
-    setLimit(customLimit)
-    getGameData(customLimit)
-  }
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (localStorage.getItem('baccaratCallOnTimeInterval') === 'true') {
-        //getGameData(limit)
+        // getGameData(limit)
       }
     }, 10000)
 
@@ -90,24 +88,47 @@ const BaccaratDashboard = () => {
   }, [limit])
 
   useEffect(() => {
-    getGameData(1000) // Ensure the current limit is passed
+    getGameData(10) // Ensure the current limit is passed
   }, [])
 
   const getGameDataByDate = async () => {
     console.log('fromDate ', fromDate, ' toDate ', toDate)
-    const res = await axiosClient.post(`/game/get/${game}/${game_type_id}/${table_limit_id}`, {
-      from_date: fromDate,
-      to_date: toDate,
-    })
-    console.log('res.data.result: ', res.data.result)
-    processData(res.data.result)
-    setRenderKey(renderKey + 1)
-    localStorage.setItem('baccaratCallOnTimeInterval', false)
+    try {
+      const res = await axiosClient.post(`/game/get/${game}/${game_type_id}/${table_limit_id}`, {
+        from_date: fromDate,
+        to_date: toDate,
+      })
+      console.log('res.data.result: ', res.data.result)
+      processData(res.data.result)
+      setRenderKey(renderKey + 1)
+      localStorage.setItem('baccaratCallOnTimeInterval', false)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getGameDataByFromShoeToToShoe = async () => {
+    console.log('fromShoe: ', fromShoe, 'toShoe: ', toShoe)
+
+    try {
+      const res = await axiosClient.get(
+        `/baccarat/get/from/to/${game_type_id}/${table_limit_id}/${fromShoe}/${toShoe}`,
+      )
+
+      console.log('res: ', res)
+      setShoePlayerBankerComponent(false)
+      processData(res.data.result)
+      localStorage.setItem('baccaratCallOnTimeInterval', false)
+      setRenderKey(renderKey + 1)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const getGameData = async (limitParam) => {
     const limitToUse = limitParam || limit
     const res = await axiosClient.get(`/baccarat/get/${game_type_id}/${table_limit_id}/${limit}`)
+    setShoePlayerBankerComponent(false)
     processData(res.data.result)
     setRenderKey(renderKey + 1)
     localStorage.setItem('baccaratCallOnTimeInterval', true)
@@ -119,7 +140,7 @@ const BaccaratDashboard = () => {
     setDataSize(resData.length)
     const resShoes = await axiosClient.get(`/baccarat/get/shoes/${game_type_id}/${table_limit_id}`)
 
-    console.log('resShoes:', resShoes)
+    //console.log('resShoes:', resShoes)
 
     let live = false
     const currentTime = new Date()
@@ -278,6 +299,7 @@ const BaccaratDashboard = () => {
     setData(data)
     setDoughnutData(doughnutData)
     setSideWin(sideWin)
+    setShoePlayerBankerComponent(true)
   }
 
   const getDataByShoe = async (data) => {
@@ -368,33 +390,33 @@ const BaccaratDashboard = () => {
                       className={` d-flex gap-2 w-100 justify-content-between   justify-content-sm-evenly align-items-center`}
                     >
                       <div className={`d-flex gap-2`}>
-                        <lable> 100</lable>
+                        <lable> 10</lable>
                         <input
                           className="pointer text-dark "
                           type="radio"
-                          value={'100'}
+                          value={'10'}
                           name="searchBy"
                           id="searchByDate"
                           onChange={(e) => setLimit(e.target.value)}
                         />
                       </div>
                       <div className={`d-flex gap-2`}>
-                        <lable> 500</lable>
+                        <lable> 20</lable>
                         <input
                           className="pointer text-dark "
                           type="radio"
-                          value={'500'}
+                          value={'20'}
                           name="searchBy"
                           id="searchByDate"
                           onChange={(e) => setLimit(e.target.value)}
                         />
                       </div>
                       <div className={`d-flex gap-2`}>
-                        <lable> 1000</lable>
+                        <lable> 50</lable>
                         <input
                           className="pointer text-dark "
                           type="radio"
-                          value={'1000'}
+                          value={'50'}
                           name="searchBy"
                           id="searchByDate"
                           onChange={(e) => setLimit(e.target.value)}
@@ -414,15 +436,23 @@ const BaccaratDashboard = () => {
                           <input
                             className={`form-control font12 form-control-sm ${s.placeholder_grey} bg-${theme} ${themeBorder}  `}
                             type="number"
-                            placeholder="Custome Limit"
-                            onChange={(e) => setCustomLimit(e.target.value)}
+                            placeholder="From Shoe"
+                            onChange={(e) => setFromShoe(e.target.value)}
+                          />
+                        </div>
+                        <div className={`w-100 `}>
+                          <input
+                            className={`form-control font12 form-control-sm ${s.placeholder_grey} bg-${theme} ${themeBorder}  `}
+                            type="number"
+                            placeholder="To Shoe"
+                            onChange={(e) => setToShoe(e.target.value)}
                           />
                         </div>
                         <div className={`w-100 d-flex justify-content-end `}>
                           <button
                             className="btn btn-primary bg-gradient btn-sm  fontText"
                             type="button"
-                            onClick={() => getGameDataByLimit()}
+                            onClick={() => getGameDataByFromShoeToToShoe()}
                           >
                             Search
                           </button>
@@ -495,35 +525,37 @@ const BaccaratDashboard = () => {
             </div>
           </div>
         </div>
-        <div className={`w-100 mt-2 box ${s.opacity}`}>
-          <PlayerBankerDashboardComponent
-            shoes={shoes}
-            shoeData={data}
-            dataSize={dataSize}
-            getDataByShoe={getDataByShoe}
-          />
-        </div>
-        <div className={`w-100  mt-3`} style={{ padding: '7px' }}>
-          <div className={`row  g-3 `}>
-            <div className={`col-12 col-md-6 box ${s.opacity} `}>
-              <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
-                <PieChartComponent bankerVsPlayer={bankerVsPlayer} />
+        <div className={``}>
+          <div className={`w-100 mt-2 box ${s.opacity}`}>
+            <PlayerBankerDashboardComponent
+              shoes={shoes}
+              shoeData={data}
+              dataSize={dataSize}
+              getDataByShoe={getDataByShoe}
+            />
+          </div>
+          <div className={`w-100  mt-3`} style={{ padding: '7px' }}>
+            <div className={`row  g-3 `}>
+              <div className={`col-12 col-md-6 box ${s.opacity} `}>
+                <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
+                  <PieChartComponent bankerVsPlayer={bankerVsPlayer} />
+                </div>
               </div>
-            </div>
-            <div className={`col-12 col-md-6 box ${s.opacity}`}>
-              <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
-                <DoughnutChartComponent doughnutData={doughnutData} />
+              <div className={`col-12 col-md-6 box ${s.opacity}`}>
+                <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
+                  <DoughnutChartComponent doughnutData={doughnutData} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className={`py-3 box ${s.opacity}`}>
-          <div
-            className={`py-3 row shadow-s rounded  d-flex justify-content-center ${themeBorder} bg-gradient`}
-          >
-            <div className={`col-11 col-sm-10 h-100`}>
-              <BarChartComponent sideWin={sideWin} />
+          <div className={`py-3 box ${s.opacity}`}>
+            <div
+              className={`py-3 row shadow-s rounded  d-flex justify-content-center ${themeBorder} bg-gradient`}
+            >
+              <div className={`col-11 col-sm-10 h-100`}>
+                <BarChartComponent sideWin={sideWin} />
+              </div>
             </div>
           </div>
         </div>
