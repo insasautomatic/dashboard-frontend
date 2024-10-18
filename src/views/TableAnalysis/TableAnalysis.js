@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import s from './Tables.module.css'
-import axiosClient from '../../../axiosClient'
+import s from './TableAnalysis.module.css'
+import axiosClient from '../../axiosClient'
 import cards from 'src/assets/images/dashboard/cards.jpg'
 import roulletImage from 'src/assets/images/tables/2.png'
 import baccaratBlue from 'src/assets/images/tables/baccarat_blue.png'
@@ -16,7 +16,9 @@ import gsap from 'gsap'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const Tables = (props) => {
+const TableAnalysis = () => {
+  const { game, id } = useParams()
+
   const scrollRef = useRef(null)
   const theme = useSelector((state) => state.theme)
   const navigate = useNavigate()
@@ -28,7 +30,8 @@ const Tables = (props) => {
 
   const getTables = async () => {
     try {
-      const { data } = await axiosClient.get(`/table/limits/get/tables/${props.id}`)
+      const { data } = await axiosClient.get(`/table/limits/get/tables/${id}`)
+      console.log('data', data)
       setTables(data.result)
       setOriginalTables(data.result)
     } catch (error) {
@@ -49,22 +52,14 @@ const Tables = (props) => {
   }
 
   const handleViewDashboard = (game_type_name, table_limit_name, game_type_id, table_limit_id) => {
-    console.log("props.table: ",props.table)
-    
-    if (props.table.toLowerCase().includes('roulette')) {
+    if (game.toLowerCase().includes('roulette')) {
       navigate(
         `/dashboard/roulette/${game_type_name}/${table_limit_name}/${game_type_id}/${table_limit_id}`,
       )
     }
-    if (props.table.toLowerCase().includes('baccarat')) {
+    if (game.toLowerCase().includes('baccarat')) {
       navigate(
         `/dashboard/baccarat/${game_type_name}/${table_limit_name}/${game_type_id}/${table_limit_id}`,
-      )
-    }
-
-    if (props.table.toLowerCase().includes('andar bahar')) {
-      navigate(
-        `/dashboard/andarbahar/${game_type_name}/${table_limit_name}/${game_type_id}/${table_limit_id}`,
       )
     }
   }
@@ -75,10 +70,27 @@ const Tables = (props) => {
   }
 
   useEffect(() => {
+    console.log("game: ",game)
     getTables()
-  }, [props.table, props.id])
+  }, [game, id])
 
   useEffect(() => {
+
+    gsap.fromTo(
+      '.fade-in',
+      {
+        delay: 0.5,
+        opacity: 0,
+        y: 50,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power1.out',
+      },
+    )
+
     const cards = scrollRef.current.children
     const config = { threshold: 0.1 }
 
@@ -101,7 +113,7 @@ const Tables = (props) => {
     return () => {
       observer.disconnect() // Cleanup the observer on component unmount
     }
-  }, [tables, props.id, search])
+  }, [tables, ,game,id, search])
 
   // Fade-in animation function using GSAP
   function fadeIn(targets) {
@@ -116,9 +128,10 @@ const Tables = (props) => {
 
   return (
     <div
-      className={` ${theme === 'dark' ? 'text-light' : 'text-dark'} table-main h-100 py-2 container capitalize`}
+      className={` ${theme === 'dark' ? 'text-light' : 'text-dark'} table-main h-100 py-2 container capitalize fade-in`}
+      key={game}
     >
-      <h2 className="text-center my-2">{props.table}</h2>
+      <h2 className="text-center my-2">{game}</h2>
       <div className="w-100 d-flex h-100 justify-content-between align-items-end ">
         <div className={`${s.form__group} ${s.field}  poppins-400`}>
           <input
@@ -140,15 +153,7 @@ const Tables = (props) => {
           </label>
         </div>
 
-        <div>
-          <button
-            type="button"
-            onClick={() => props.toggleAddNew(true)}
-            className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-dark'} btn-sm px-3 bg-gradient capitalize`}
-          >
-            Add {props.table}
-          </button>
-        </div>
+       
       </div>
       <div className="row gap-0 w-100 px-3" ref={scrollRef}>
         {tables.map((table, i) => (
@@ -159,36 +164,28 @@ const Tables = (props) => {
           >
             <div
               className={`card-hover poppins-400 ${s.box} ${theme === 'light' ? s.black : s.blue} pointer shadow`}
+              onClick={() =>
+                handleViewDashboard(
+                  table.game_type_name,
+                  table.table_limit_name,
+                  table.game_type_id,
+                  table.table_limit_id,
+                )
+              }
             >
-              {/*   navigate(
-                  `/dashboard/${table.game_type_name}/${table.table_limit_name}/${table.game_type_id}/${table.table_limit_id}`,
-                ) */}
-              <div className="card border-0 bg-transparent overflow-hidden" style={{ width: '100%' }}>
+              
+              <div className="card border-0 overflow-hidden bg-transparent" style={{ width: '100%' }}>
                 <div className="overflow-hidden">
                   <img
-                    src={props.table == 'roulette' ? roulletImage : baccarat[i % 3]}
+                    src={game == 'roulette' ? roulletImage : baccarat[i % 3]}
                     className="card-img-top card-hover2 bg-dark bg-gradient drop_shadow"
                     alt="..."
-                    onClick={() =>
-                      handleViewDashboard(
-                        table.game_type_name,
-                        table.table_limit_name,
-                        table.game_type_id,
-                        table.table_limit_id,
-                      )
-                    }
+                   
                   />
                 </div>
-                <div className="card-body bg-light ">
+                <div className="card-body bg-light  py-4">
                   <h5
-                    onClick={() =>
-                      handleViewDashboard(
-                        table.game_type_name,
-                        table.table_limit_name,
-                        table.game_type_id,
-                        table.table_limit_id,
-                      )
-                    }
+                   
                     className="card-title fontSubHeading poppins-500"
                   >
                     {table.table_limit_name}
@@ -206,14 +203,7 @@ const Tables = (props) => {
                   >
                     Game: {table.game_type_name} <br /> Language: {table.language}
                   </p>
-                  <div className="d-flex justify-content-end">
-                    <i
-                      onClick={() => handleNavigate(table.table_limit_id)}
-                      className={`bi bi-pen-fill icon-size font-size icon icon-hover pointer text-shadow icon-hover ${
-                        theme === 'light' ? 'text-dark' : 'text-dark'
-                      }`}
-                    ></i>
-                  </div>
+                 
                 </div>
               </div>
             </div>
@@ -224,4 +214,4 @@ const Tables = (props) => {
   )
 }
 
-export default Tables
+export default TableAnalysis

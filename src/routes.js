@@ -53,6 +53,9 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const TableLimits = React.lazy(() => import('./views/limits/Tables/TableLimit'))
 const EditTable = React.lazy(() => import('./views/limits/Tables/EditTable'))
+
+const TableAnalysis = React.lazy(() => import('./views/TableAnalysis/TableAnalysis'))
+
 const UpdateTableLimits = React.lazy(() => import('./views/settings/Configs/UpdateTableLimits'))
 const Backgrounds = React.lazy(() => import('./views/settings/Configs/Backgrounds'))
 const Themes = React.lazy(() => import('./views/settings/Configs/Themes'))
@@ -60,6 +63,7 @@ const Languages = React.lazy(() => import('./views/settings/Configs/Languages'))
 
 const RouletteDashboard = React.lazy(() => import('./views/analysis/Roulette/RouletteDashboard'))
 const BaccaratDashboard = React.lazy(() => import('./views/analysis/Baccarat/BaccaratDashboard.js'))
+const AndarBaharDashboard = React.lazy(() => import('./views/analysis/AndarBahar/AndarBaharDashboard.js'))
 
 const Rough = React.lazy(() => import('./views/rough/Rough'))
 const Rough2 = React.lazy(() => import('./views/rough/Rough2'))
@@ -82,6 +86,11 @@ const routes = [
     element: BaccaratDashboard,
   },
   {
+    path: '/dashboard/andarbahar/:game/:table_limit_name/:game_type_id/:table_limit_id',
+    name: 'Dashboard',
+    element: AndarBaharDashboard,
+  },
+  {
     path: '/dashboard/:game/:table_limit_name/:game_type_id/:table_limit_id',
     name: 'Dashboard',
     element: RouletteDashboard,
@@ -96,7 +105,7 @@ const routes = [
   { path: '/table/analysis/', name: 'Limits', element: TableLimits },
 
   { path: '/table/analysis/roulette', name: 'Dashboard', element: RouletteDashboard },
-  { path: '/table/analysis/:table/:id', name: 'Dashboard', element: RouletteDashboard },
+  { path: '/table/analysis/:game/:id', name: 'Dashboard', element: TableAnalysis },
 
   { path: '/settings/update/table/limit', name: 'UpdateTableLimits', element: UpdateTableLimits },
   { path: '/settings/update/background', name: 'Backgrounds', element: Backgrounds },

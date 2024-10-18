@@ -80,9 +80,9 @@ const BaccaratDashboard = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (localStorage.getItem('baccaratCallOnTimeInterval') === 'true') {
-        // getGameData(limit)
+        //getGameData(limit)
       }
-    }, 10000)
+    }, 2000)
 
     return () => clearInterval(intervalId) // Cleanup on unmount
   }, [limit])
@@ -126,6 +126,7 @@ const BaccaratDashboard = () => {
   }
 
   const getGameData = async (limitParam) => {
+    console.log('getGameData: ', limitParam)
     const limitToUse = limitParam || limit
     const res = await axiosClient.get(`/baccarat/get/${game_type_id}/${table_limit_id}/${limit}`)
     setShoePlayerBankerComponent(false)
@@ -137,7 +138,7 @@ const BaccaratDashboard = () => {
   const processData = async (resData) => {
     setRawData(resData)
     console.log('res.data.result: ', resData)
-    setDataSize(resData.length)
+
     const resShoes = await axiosClient.get(`/baccarat/get/shoes/${game_type_id}/${table_limit_id}`)
 
     //console.log('resShoes:', resShoes)
@@ -297,6 +298,7 @@ const BaccaratDashboard = () => {
     setBankerVsPlayer(bankerVsPlayer)
     setShoes(resShoes.data.result)
     setData(data)
+    setDataSize(data.length)
     setDoughnutData(doughnutData)
     setSideWin(sideWin)
     setShoePlayerBankerComponent(true)
@@ -354,7 +356,7 @@ const BaccaratDashboard = () => {
       opacity: 1,
       y: 0,
       duration: 0.6,
-      //stagger: 0.2,
+      stagger: 0.2,
       ease: 'power1.out',
     })
   }
@@ -378,7 +380,7 @@ const BaccaratDashboard = () => {
           <h3> {table_limit_name ? table_limit_name : 'Title'}</h3>
         </div>
 
-        <div className={`px-2 py-1`}>
+        <div className={`px-2 py-1 `}>
           <div className={`px-1`}>
             <div className={`row    d-flex justify-content-center`}>
               <div
@@ -526,7 +528,7 @@ const BaccaratDashboard = () => {
           </div>
         </div>
         <div className={``}>
-          <div className={`w-100 mt-2 box ${s.opacity}`}>
+          <div className={`w-100 mt-2  `}>
             <PlayerBankerDashboardComponent
               shoes={shoes}
               shoeData={data}
@@ -534,26 +536,45 @@ const BaccaratDashboard = () => {
               getDataByShoe={getDataByShoe}
             />
           </div>
-          <div className={`w-100  mt-3`} style={{ padding: '7px' }}>
-            <div className={`row  g-3 `}>
+          <div className={`w-100   mt-3`}>
+            <div className={`row  g-3  `}>
               <div className={`col-12 col-md-6 box ${s.opacity} `}>
-                <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
-                  <PieChartComponent bankerVsPlayer={bankerVsPlayer} />
+                <div className={` shadow-s rounded py-2 ${themeBorder} bg-gradient`}>
+                  <div className={`px-1`}>
+                    <div className={`border-bottom border-secondary border-opacity-25 px-2`}>
+                      Total Shoes {dataSize}
+                    </div>
+                  </div>
+                  <div className={``}>
+                    <PieChartComponent bankerVsPlayer={bankerVsPlayer} />
+                  </div>
                 </div>
               </div>
               <div className={`col-12 col-md-6 box ${s.opacity}`}>
-                <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
-                  <DoughnutChartComponent doughnutData={doughnutData} />
+                <div className={` shadow-s rounded py-2 ${themeBorder} bg-gradient`}>
+                  <div className={`px-1`}>
+                    <div className={`border-bottom border-secondary border-opacity-25 px-2`}>
+                      Total Shoes {dataSize}
+                    </div>
+                  </div>
+                  <div className={``}>
+                    <DoughnutChartComponent doughnutData={doughnutData} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className={`py-3 box ${s.opacity}`}>
+          <div className={` box mt-3 box  ${s.opacity}`}>
             <div
               className={`py-3 row shadow-s rounded  d-flex justify-content-center ${themeBorder} bg-gradient`}
             >
-              <div className={`col-11 col-sm-10 h-100`}>
+              <div className={``}>
+                <div className={`border-bottom border-secondary border-opacity-25 px-2`}>
+                  Total Shoes {dataSize}
+                </div>
+              </div>
+              <div className={`col-11 col-sm-10 h-100 mt-2`}>
                 <BarChartComponent sideWin={sideWin} />
               </div>
             </div>

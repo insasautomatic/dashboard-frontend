@@ -34,11 +34,11 @@ const _nav = [
     icon: <GraphUpArrow className="nav-icon text-light" />,
 
     items: [
-      {
+      /*  {
         component: CNavItem,
         name: 'Roulette',
         to: '/table/analysis/roulette',
-      },
+      }, */
     ],
   },
   {

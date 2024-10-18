@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { CFormInput, CFormCheck, CButton } from '@coreui/react'
 
 import { ScrollTrigger } from 'gsap/all'
-import gsap from 'gsap'
+import gsap from 'gsap' 
 import { useGSAP } from '@gsap/react'
 import BarChartComponent from './rouletteDashboardComponents/BarChartComponent.js'
 import RadarChartComponent from './rouletteDashboardComponents/RadarChartComponent.js'
@@ -22,6 +22,7 @@ import WinStatistics from './rouletteDashboardComponents/WinStatistics.js'
 
 const RouletteDashboard = () => {
   const [renderKey, setRenderKey] = useState(0)
+  const theme = useSelector((state) => state.theme)
   const { game, table_limit_name, game_type_id, table_limit_id } = useParams()
 
   const [data, setData] = useState([])
@@ -30,7 +31,7 @@ const RouletteDashboard = () => {
   const [redBlackTotal, setRedBlackTotal] = useState(0)
   const [rouletteData, setRouletteData] = useState([])
   const [form, setForm] = useState({})
-  const theme = useSelector((state) => state.theme)
+
   const [themeClass, setThemeClass] = useState('bg-light text-dark border')
   const [themeBorder, setThemeBorder] = useState('bg-light text-dark border')
   const [statistics, setStatistics] = useState('WheelPocketStatistics')

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import s from './PlayerBankerData.module.css'
+import s from './PlayerBankerDashboardComponent.module.css'
 import card from 'src/assets/images/baccarat/card.png'
 import Select from 'react-select'
 import { Cards, ShoeSideWin } from './BaccaratData.js'
@@ -9,7 +9,39 @@ import DoughnutChartComponent from './DoughnutChartComponent'
 import BarChartComponent from './BarChartComponent.js'
 import axiosClient from '../../../../axiosClient.js'
 
+import { ScrollTrigger } from 'gsap/all'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
 const PlayerBankerDashboardComponent = (props) => {
+  const config = { threshold: 0.1 }
+
+  let observer = new IntersectionObserver(function (entries, self) {
+    let targets = entries.map((entry) => {
+      if (entry.isIntersecting) {
+        self.unobserve(entry.target)
+        return entry.target
+      }
+    })
+
+    // Call our animation function
+    fadeIn(targets)
+  }, config)
+
+  document.querySelectorAll('.boxPlayerBanker').forEach((box) => {
+    observer.observe(box)
+  })
+
+  function fadeIn(targets) {
+    gsap.to(targets, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.2,
+      ease: 'power1.out',
+    })
+  }
+
   const theme = useSelector((state) => state.theme)
   const [themeClass, setThemeClass] = useState('bg-light text-dark border')
   const [themeBorder, setThemeBorder] = useState('bg-light text-dark border')
@@ -60,6 +92,7 @@ const PlayerBankerDashboardComponent = (props) => {
     { name: 'Banker Pair', value: 0 },
     { name: 'Player Pair', value: 0 },
   ])
+  const [showDoughnut, setShowDoughnut] = useState(true)
 
   const processData = (shoeData) => {
     console.log('processData: ', shoeData)
@@ -161,6 +194,15 @@ const PlayerBankerDashboardComponent = (props) => {
       { name: 'Player Pair', value: playerPair },
       { name: 'Banker Pair', value: bankerPair },
     ]
+
+    if (playerStreak == 0 && bankerStreak == 0 && playerPair == 0 && bankerPair == 0) {
+      setShowDoughnut(false)
+      console.log('false')
+    } else {
+      setShowDoughnut(true)
+      console.log('true')
+    }
+
     //console.log('bankerVsPlayer', bankerVsPlayer)
     //console.log('doughnutData', doughnutData)
     //console.log('sideWin', sideWin)
@@ -169,6 +211,7 @@ const PlayerBankerDashboardComponent = (props) => {
     setBankerVsPlayer(bankerVsPlayer)
     setDoughnutData(doughnutData)
     setSideWin(sideWin)
+    setRenderKey(renderKey + 1)
   }
 
   useEffect(() => {
@@ -342,8 +385,8 @@ const PlayerBankerDashboardComponent = (props) => {
       <div className={` `}>
         {currentShoeData[0] ? (
           <div>
-            <div className={`row g-3`}>
-              <div className={`col-12 h-100 col-md-5 `}>
+            <div className={`row g-3 `}>
+              <div className={`col-12 h-100 col-md-5 boxPlayerBanker ${s.opacity}  `}>
                 <div
                   className={`w-100 h-75 player shadow-s rounded ${themeBorder} bg-gradient px-1 `}
                 >
@@ -395,7 +438,7 @@ const PlayerBankerDashboardComponent = (props) => {
                   </div>
                 </div>
               </div>
-              <div className={`col-12  col-md-2`}>
+              <div className={`col-12  col-md-2 boxPlayerBanker ${s.opacity} `}>
                 <div
                   className={` h-100  shadow-s rounded ${themeBorder} bg-gradient info p-3 d-flex flex-column justify-content-between align-items-center`}
                 >
@@ -404,17 +447,37 @@ const PlayerBankerDashboardComponent = (props) => {
                       <tbody>
                         <tr>
                           <td>Shoe </td>
-                          <td className={`text-end border`}>
+                          <td className={`text-end  b`}>
                             <Select
-                              className="rounded-1 "
+                              className="rounded-1 shadow-xs  "
                               styles={{
                                 menu: (base) => ({ ...base, fontSize: '0.8rem' }),
                                 option: (base) => ({ ...base, color: 'black' }),
-                                control: (base) => ({
-                                  ...base,
-                                  fontSize: '0.8rem',
-                                  width: '100%', // Set width here
-                                  height: '10px', // Set height here
+                                control: (provided) => ({
+                                  ...provided,
+                                  minHeight: '15px', // Adjust height
+                                  backgroundColor: theme == 'dark' ? 'black' : 'white',
+                                  fontSize: '12px', // Optional: smaller text
+                                }),
+                                valueContainer: (provided) => ({
+                                  ...provided,
+                                  padding: '0px 8px', // Optional: adjust padding
+                                }),
+                                dropdownIndicator: (provided) => ({
+                                  ...provided,
+                                  padding: '4px', // Optional: adjust dropdown icon size
+                                }),
+                                singleValue: (provided) => ({
+                                  ...provided,
+                                  color: theme == 'dark' ? 'white' : 'black', // Text color for selected value
+                                }),
+                                input: (provided) => ({
+                                  ...provided,
+                                  color: theme == 'dark' ? 'white' : 'black', // Text color for input value
+                                }),
+                                placeholder: (provided) => ({
+                                  ...provided,
+                                  color: theme == 'dark' ? 'white' : 'black', // Placeholder text color
                                 }),
                               }}
                               value={currentOption}
@@ -527,7 +590,7 @@ const PlayerBankerDashboardComponent = (props) => {
                   </div>
                 </div>
               </div>
-              <div className={`col-12 h-100  col-md-5 `}>
+              <div className={`col-12 h-100  col-md-5 boxPlayerBanker ${s.opacity} `}>
                 <div
                   className={`w-100 h-75  shadow-s rounded ${themeBorder} bg-gradient player   px-1`}
                 >
@@ -580,37 +643,56 @@ const PlayerBankerDashboardComponent = (props) => {
                 </div>
               </div>
             </div>
-            <div className={`w-100  mt-3 `} style={{ padding: '7px' }}>
-              <div className={`row  g-3 `}>
-                <div className={`col-12 col-md-6 box `}>
+            <div className={`w-100  mt-3 `}>
+              <div className={`row  g-3  `}>
+                <div className={`col-12 col-md-6 boxPlayerBanker ${s.opacity}   `}>
                   <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
                     <div className={`p-2`}>
                       <div className={`px-2 border-bottom border-secondary border-opacity-25`}>
                         Shoe -{currentShoe}
                       </div>
                     </div>
-                    <div className={``}>
+                    <div className={``} key={renderKey}>
                       <PieChartComponent bankerVsPlayer={bankerVsPlayer} />
                     </div>
                   </div>
                 </div>
-                <div className={`col-12 col-md-6 box `}>
-                  <div className={` shadow-s rounded ${themeBorder} bg-gradient`}>
+                <div className={`col-12 col-md-6 boxPlayerBanker min-h-full  ${s.opacity}  `}>
+                  <div
+                    className={` shadow-s rounded ${themeBorder} bg-gradient ${showDoughnut == true ? 'd-block' : 'd-none'}`}
+                  >
                     <div className={``}>
                       <div className={`p-2`}>
                         <div className={`px-2 border-bottom border-secondary border-opacity-25`}>
                           Shoe -{currentShoe}
                         </div>
                       </div>
-                      <div className={``}>
+                      <div className={``} key={renderKey}>
                         <DoughnutChartComponent doughnutData={doughnutData} />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={`h-100  d-flex  justify-content-center align-items-center shadow-s rounded ${themeBorder} bg-gradient ${showDoughnut == false ? 'd-block' : 'd-none'}`}
+                  >
+                    <div className={`content h-100 w-100  d-flex flex-column`}>
+                      <div className={`p-2`}>
+                        <div className={`px-2 border-bottom border-secondary border-opacity-25`}>
+                          Shoe -{currentShoe}
+                        </div>
+                      </div>
+                      <div
+                        className={`h-100  d-flex justify-content-center align-items-center`}
+                        key={renderKey}
+                      >
+                        <h3 className="">No Data</h3>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className={`py-3 box `}>
+            <div className={`py-3 boxPlayerBanker ${s.opacity}  `}>
               <div
                 className={`py-1 row shadow-s rounded  d-flex justify-content-center ${themeBorder} bg-gradient`}
               >
@@ -619,8 +701,8 @@ const PlayerBankerDashboardComponent = (props) => {
                     Shoe -{currentShoe}
                   </div>
                 </div>
-                <div className={`col-12 col-sm-10 h-100`}>
-                  <div className={``}>
+                <div className={`col-12 col-sm-10 h-100 mt-2`}>
+                  <div className={``} key={renderKey}>
                     <BarChartComponent sideWin={sideWin} />
                   </div>
                 </div>
